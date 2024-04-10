@@ -31,7 +31,7 @@ namespace big
 
 				std::string result = obj["data"];
 				std::string sourcelang = obj["source_lang"];
-				if (sourcelang == g.session.DeepL_target_lang && g.session.hideduplicate)
+				if (sourcelang == g.session.DeepL_target_lang && g.session.chat_translator_bypass)
 					return "None";
 				return result;
 			}
@@ -80,7 +80,7 @@ namespace big
 			if (result[0]["translations"].is_array())
 			{
 				std::string source_lang = result[0]["detectedLanguage"]["language"].get<std::string>();
-				if (source_lang == g.session.Bing_target_lang && g.session.hideduplicate)
+				if (source_lang == g.session.Bing_target_lang && g.session.chat_translator_bypass)
 					return "None";
 				return result[0]["translations"][0]["text"].get<std::string>();
 			}
@@ -123,7 +123,7 @@ namespace big
 
 				std::string result = obj[0][0][0];
 				auto& array = obj.back().back();
-				if (array[0] == g.session.Google_target_lang && g.session.hideduplicate)
+				if (array[0] == g.session.Google_target_lang && g.session.chat_translator_bypass)
 					return "None";
 				return result;
 
