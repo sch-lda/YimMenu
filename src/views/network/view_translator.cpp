@@ -36,6 +36,7 @@ namespace big
 	void view::translator()
 	{
 		components::sub_title("Chat Translation");
+		components::small_text("前三个提供商基于逆向分析,并非官方免费开放的接口,使用前请注意您所在国家和可能导致的法律问题!");
 
 		static const auto Provider = std::to_array<ServiceProvider>({{0, "Microsoft(无门槛)"}, {1, "Google(需挂代理)"}, {2, "DeepLx(需要DeepLx程序)"}, {3, "OpenAI(需要token)"}});
 
