@@ -25,17 +25,24 @@ namespace big
 
 	const char* player::get_name() const
 	{
-		return m_net_game_player == nullptr ? "" : m_net_game_player->get_name();
+		return get_net_game_player() == nullptr ? "" : m_net_game_player->get_name();
 	}
 
 	rage::rlGamerInfo* player::get_net_data() const
 	{
-		return m_net_game_player == nullptr ? nullptr : m_net_game_player->get_net_data();
+		return get_net_game_player() == nullptr ? nullptr : m_net_game_player->get_net_data();
 	}
 
 	CNetGamePlayer* player::get_net_game_player() const
 	{
-		return m_net_game_player;
+		return (m_net_game_player == nullptr || m_net_game_player->m_player_info == nullptr) ? nullptr : m_net_game_player;
+	}
+
+	int64_t player::get_rockstar_id() const
+	{
+		if (auto net_data = get_net_data())
+			return net_data->m_gamer_handle.m_rockstar_id;
+		return 0;
 	}
 
 	CPed* player::get_ped() const
@@ -48,8 +55,8 @@ namespace big
 
 	CPlayerInfo* player::get_player_info() const
 	{
-		if (m_net_game_player != nullptr && m_net_game_player->m_player_info != nullptr)
-			return m_net_game_player->m_player_info;
+		if (auto net_player = get_net_game_player())
+			return net_player->m_player_info;
 		return nullptr;
 	}
 
@@ -73,8 +80,7 @@ namespace big
 	{
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id
-			    == get_net_data()->m_gamer_handle.m_rockstar_id)
+			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id == get_rockstar_id())
 			{
 				return gta_util::get_network()->m_game_session_ptr->m_peers[i];
 			}
@@ -128,14 +134,14 @@ namespace big
 	uint8_t player::id() const
 	{
 		if (*g_pointers->m_gta.m_is_session_started)
-			return m_net_game_player == nullptr ? -1 : m_net_game_player->m_player_id;
+			return get_net_game_player() == nullptr ? -1 : m_net_game_player->m_player_id;
 		else
 			return self::id;
 	}
 
 	bool player::is_host() const
 	{
-		return m_net_game_player == nullptr ? false : m_net_game_player->is_host();
+		return get_net_game_player() == nullptr ? false : m_net_game_player->is_host();
 	}
 
 	bool player::is_friend() const
@@ -145,12 +151,12 @@ namespace big
 
 	bool player::is_valid() const
 	{
-		return m_net_game_player == nullptr ? false : m_net_game_player->is_valid();
+		return get_net_game_player() == nullptr ? false : m_net_game_player->is_valid();
 	}
 
 	bool player::equals(const CNetGamePlayer* net_game_player) const
 	{
-		return net_game_player == m_net_game_player;
+		return net_game_player == get_net_game_player();
 	}
 
 	std::string player::to_lowercase_identifier() const
