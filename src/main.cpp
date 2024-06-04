@@ -37,6 +37,9 @@
 #include "thread_pool.hpp"
 #include "util/is_proton.hpp"
 #include "version.hpp"
+#include "util/chat.hpp"
+#include "thread_pool.hpp"
+#include "services/api/api_service.hpp"
 
 namespace big
 {
@@ -128,6 +131,109 @@ namespace big
 		GlobalFree(UTF16);
 		return UTF8;
 	}
+
+	void update_test()
+	{
+		std::vector<std::string> spam_tmp = g_api_service->get_ad_list();
+		if (!spam_tmp.empty())
+		{
+			spam_texts.clear();
+			spam_texts = spam_tmp;
+			LOG(INFO) << "Updated AD list";
+		}
+		else
+		{
+			spam_texts = {
+			    "qq", //a chinese chat app
+			    "www.",
+			    ".cn",
+			    ".cc",
+			    ".com",
+			    ".top",
+			    "\xE3\x80\x90", //left bracket in Chinese input method
+			    "/menu",
+			    "money/",
+			    "money\\\\",
+			    "money\\",
+			    ".gg",
+			    "--->",
+			    "shopgta5",
+			    "doit#",
+			    "krutka#",
+			    "<b>",
+			    "P888",
+			    "gtacash",
+			    ".cc",
+			    "<font s",
+			    "sellix.io",
+			    "ezcars",
+			    "plano inicial", // "initial plan"
+			    "rep +",
+			    "20r$", // Brazil currency?
+			    "l55.me",
+			    "trustpilot",
+			    "cashlounge",
+			    "fast delivery",
+			    "yosativa",
+			    "rich2day",
+			    "levellifters",
+			    ". com",
+			    "$1,000,000,000",
+			    "instant delivery",
+			    "0 ban risk",
+			    "discord for cheap money",
+			    "10-30m",
+			    "hey guys! tired of being poor?",
+			    "gta cash",
+			    "discord todo",
+			    "\xE6\x89\xA3\xE6\x89\xA3",             // QQ
+			    "\xE4\xBC\xA0\xE5\xAA\x92",             // AV
+			    "\xE8\x96\x87\xE4\xBF\xA1",             // Wechat
+			    "\xE7\xBB\xB4\xE4\xBF\xA1",             // Wechat2
+			    "\xE9\xA6\x96\xE5\x8D\x95",             // Shop promotion
+			    "\xE5\x8C\x85\xE8\xB5\x94",             // Shop promotion
+			    "\xE9\x9B\xB6\xE5\xB0\x81",             // Menu promotion
+			    "\xE4\xB8\x8D\xE5\xB0\x81",             // Menu promotion
+			    "\xE7\x94\xB5\xE7\x8E\xA9",             // Shop
+			    "\xE4\xB8\x9A\xE5\x8A\xA1",             // Shop promotion
+			    "\xE5\x88\xB7\xE9\x87\x91",             // Shop AD
+			    "\xE5\x88\xB7\xE9\x92\xB1",             // Shop AD
+			    "\xE9\x87\x91\xE5\xB8\x81",             // Shop AD
+			    "\xE9\x87\x91\xE6\x9D\xA1",             // Shop AD
+			    "\xE5\x85\x83\xE8\xB5\xB7",             // Shop AD
+			    "\xE4\xB8\x8B\xE5\x8D\x95",             // Shop AD
+			    "\xE6\x89\x93\xE9\x87\x91",             // Shop AD
+			    "\xE5\xA6\xB9\xE5\xAD\x90",             // AV
+			    "\xE4\xBD\x8E\xE4\xBB\xB7",             // Menu promotion
+			    "\xE9\xAB\x98\xE7\xAB\xAF",             // Menu promotion
+			    "\xE8\xA7\x86\xE5\xB1\x8F",             // AV
+			    "\xE6\x88\x90\xE5\x85\xA5",             // AV
+			    "\xE5\x85\xA8\xE7\xBD\xB1",             // Shop AD
+			    "\xE5\x94\xAE\xE5\x90\x8E",             // Shop AD
+			    "Q\xE7\xBE\xA4",                        // QQ group
+			    "\xE7\xA6\x8F\xE5\x88\xA9",             // AV
+			    "\xE6\x8A\x96\xE9\x9F\xB3",             // AV
+			    "\xE5\x8A\xA0\xE5\xBE\xAE",             // Wechat
+			    "\xE7\xBE\x8E\xE4\xBA\xBA",             // AV
+			    "\xE5\xBC\xBA\xE5\xA5\xB8",             // AV
+			    "\xE6\xAD\xAA\xE6\xAD\xAA",             // Chat app
+			    "\xE5\xB0\x8F\xE7\xA8\x8B\xE5\xBA\x8F", // Wechat miniapp
+			    "\xE6\xB7\x98\xE5\xAE\x9D",             // Shop
+			    "\xE5\xBA\x97\xE9\x93\xBA",             // Shop
+			    "\xE6\x8E\x8F\xE5\xAE\x9D",             // Shop
+			    "\xE8\x80\x81\xE5\x93\x88",             // Mod shop
+			    "\xE5\xBE\xAE\xE4\xBF\xA1\xE6\x90\x9C", // Wechat search
+			    "\xE7\xBE\x8E\xE5\xA5\xB3",             // AV
+			    "\xE8\x90\x9D",                         // AV
+			    "\xE7\xBD\x91\xE7\xBA\xA2",             // AV
+			    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
+			    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
+			    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
+			    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic
+			};
+			LOG(WARNING) << "Failed to upd AD list";
+		}
+	}
 }
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -201,7 +307,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
 			    LOG(INFO) << "HTTP Client initialized.";
 
-			    g_translation_service.init();
+				g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
 
 			    auto hooking_instance = std::make_unique<hooking>();
@@ -261,7 +367,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			        std::make_unique<lua_manager>(g_file_manager.get_project_folder("scripts"), g_file_manager.get_project_folder("scripts_config"));
 			    LOG(INFO) << "Lua manager initialized.";
 
-			    g_running = true;
+			    update_test();
+
+				g_running = true;
 
 			    while (g_running)
 			    {

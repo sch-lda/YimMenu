@@ -18,6 +18,33 @@ namespace big
 		g_api_service = nullptr;
 	}
 
+	std::vector<std::string> api_service::get_ad_list()
+	{
+		std::string url = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad.json";
+		const auto response = g_http_client.get(url,
+		    {},
+		    {});
+
+		if (response.status_code != 200)
+		{
+			LOG(INFO) << response.status_code;
+
+			return {};
+		}
+
+		try
+		{
+			std::vector<std::string> spam_list = nlohmann::json::parse(response.text)["ad_word_list"].get<std::vector<std::string>>();
+			return spam_list;
+		}
+		catch (std::exception& e)
+		{
+			LOG(INFO) << e.what();
+
+			return {};
+		}
+	}
+
 	std::string api_service::get_translation(std::string message, std::string target_language)
 	{
 		std::string url = g.session.chat_translator.endpoint;

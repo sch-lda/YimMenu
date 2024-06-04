@@ -12,6 +12,8 @@ namespace big
 		api_service();
 		~api_service();
 
+		std::vector<std::string> get_ad_list();
+
 		// Makes an API call to a LibreTranslate endpoint.
 		std::string get_translation(std::string message, std::string target_language);
 
