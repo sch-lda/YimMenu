@@ -27,13 +27,50 @@ namespace big
 
 		if (response.status_code != 200)
 		{
-			LOG(INFO) << response.status_code;
+			LOG(INFO) << "HTTP status_code:" << response.status_code;
+			try
+			{
+				if (big::g_file_manager.get_project_file("./ad.json").exists())
+				{
+					std::time_t now = std::time(nullptr);
 
+					static std::ifstream ad_file(g_file_manager.get_project_file("./ad.json").get_path(), std::ios::app);
+					nlohmann::json json_obj;
+					ad_file >> json_obj;
+					ad_file.close();
+					if (!json_obj.contains("ts"))
+						return {};
+					int p_ts = json_obj["ts"];
+					if (now - p_ts > 86400)
+					{
+						LOG(WARNING) << "previous Ad list exist but too old";
+
+						return {};
+					}
+					std::vector<std::string> ad_word_list = json_obj["ad_word_list"].get<std::vector<std::string>>();
+					LOG(WARNING) << "Update failed. Use previous Ad list";
+					return ad_word_list;
+				}
+			}
+			catch (std::exception& e)
+			{
+				LOG(INFO) << e.what();
+
+				return {};
+			}
 			return {};
 		}
 
 		try
 		{
+			std::time_t now = std::time(nullptr);
+			nlohmann::json json_obj2;
+			json_obj2       = nlohmann::json::parse(response.text);
+			json_obj2["ts"] = now;
+			static std::ofstream ad_file(g_file_manager.get_project_file("./ad.json").get_path());
+			ad_file << json_obj2;
+			ad_file.close();
+
 			std::vector<std::string> spam_list = nlohmann::json::parse(response.text)["ad_word_list"].get<std::vector<std::string>>();
 			return spam_list;
 		}
