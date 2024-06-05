@@ -41,7 +41,7 @@ namespace big
 					if (!json_obj.contains("ts"))
 						return {};
 					int p_ts = json_obj["ts"];
-					if (now - p_ts > 86400)
+					if (now - p_ts > 259200)
 					{
 						LOG(WARNING) << "previous Ad list exist but too old";
 
