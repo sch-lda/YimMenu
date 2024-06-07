@@ -82,6 +82,68 @@ namespace big
 		}
 	}
 
+	std::vector<int> api_service::get_ad_rid_list()
+	{
+		std::string url     = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad_rid.json";
+		const auto response = g_http_client.get(url, {}, {});
+
+		if (response.status_code != 200)
+		{
+			LOG(INFO) << "HTTP status_code:" << response.status_code;
+			try
+			{
+				if (big::g_file_manager.get_project_file("./ad_rid.json").exists())
+				{
+					std::time_t now = std::time(nullptr);
+
+					static std::ifstream ad_file(g_file_manager.get_project_file("./ad_rid.json").get_path(), std::ios::app);
+					nlohmann::json json_obj;
+					ad_file >> json_obj;
+					ad_file.close();
+					if (!json_obj.contains("ts"))
+						return {};
+					int p_ts = json_obj["ts"];
+					if (now - p_ts > 259200)
+					{
+						LOG(WARNING) << "previous Ad list exist but too old";
+
+						return {};
+					}
+					std::vector<int> ad_word_list = json_obj["ad_rid_list"].get<std::vector<int>>();
+					LOG(WARNING) << "Update failed. Use previous Ad RID list";
+					return ad_word_list;
+				}
+			}
+			catch (std::exception& e)
+			{
+				LOG(INFO) << e.what();
+
+				return {};
+			}
+			return {};
+		}
+
+		try
+		{
+			std::time_t now = std::time(nullptr);
+			nlohmann::json json_obj2;
+			json_obj2       = nlohmann::json::parse(response.text);
+			json_obj2["ts"] = now;
+			static std::ofstream ad_file(g_file_manager.get_project_file("./ad_rid.json").get_path());
+			ad_file << json_obj2;
+			ad_file.close();
+
+			std::vector<int> spam_list = nlohmann::json::parse(response.text)["ad_rid_list"].get<std::vector<int>>();
+			return spam_list;
+		}
+		catch (std::exception& e)
+		{
+			LOG(INFO) << e.what();
+
+			return {};
+		}
+	}
+
 	std::string api_service::get_translation(std::string message, std::string target_language)
 	{
 		std::string url = g.session.chat_translator.endpoint;

@@ -35,7 +35,9 @@ namespace big
 		std::string sender;
 		std::string content;
 	};
+
 	inline std::vector<std::string> spam_texts;
+	inline std::vector<int> spam_rid;
 
 	inline std::queue<chat_message> translate_queue;
 }
