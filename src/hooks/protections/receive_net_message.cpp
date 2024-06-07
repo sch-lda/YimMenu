@@ -122,18 +122,18 @@ namespace big
 				if (player->is_spammer)
 					return true;
 
-				for (auto rid : spam_rid)
+				if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 				{
-					if (player->get_rockstar_id() == rid)
+					for (auto rid : spam_rid)
 					{
-						LOG(INFO) << "Known Spamer: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
-						player->is_spammer = true;
-						if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
+						if (player->get_rockstar_id() == rid)
 						{
+							LOG(INFO) << "Known Spamer: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
+							player->is_spammer = true;
 							session::add_infraction(player, Infraction::CHAT_SPAM);
 							g.reactions.chat_spam.process(player);
+							return true;
 						}
-						return true;
 					}
 				}
 
