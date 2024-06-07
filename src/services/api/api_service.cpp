@@ -105,7 +105,7 @@ namespace big
 					int p_ts = json_obj["ts"];
 					if (now - p_ts > 259200)
 					{
-						LOG(WARNING) << "previous Ad list exist but too old";
+						LOG(WARNING) << "previous Ad RID list exist but too old";
 
 						return {};
 					}
