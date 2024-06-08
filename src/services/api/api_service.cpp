@@ -146,12 +146,19 @@ namespace big
 
 	bool api_service::report_spam(std::string_view message, uint64_t rid, int type)
 	{
+		try
+		{
 		LOG(INFO) << "1";
 		LOG(INFO) << "2";
 		LOG(INFO) << "3";
 		LOG(INFO) << "4";
 		LOG(INFO) << "5";
 		return true;
+		}
+		catch (std::exception& e)
+		{
+			return false;
+		}
 	}
 	std::string api_service::get_translation(std::string message, std::string target_language)
 	{

@@ -413,7 +413,7 @@ namespace big
 			bool trust_friends                     = false;
 			bool trust_session                     = false;
 			bool use_spam_timer                    = true;
-			bool auto_report_spam					= true;
+			bool auto_report_spam				   = true;
 			float spam_timer                       = 2.5f;
 			int spam_length                        = 55;
 

@@ -153,6 +153,7 @@ namespace big
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
 	bool_command chat_translate("translatechat", "TRANSLATOR_TOGGLE", "TRANSLATOR_TOGGLE_DESC", g.session.chat_translator.enabled);
+	bool_command upl_spam("reportspam", "REPORT_SPAM", "REPORT_SPAM_DESC", g.session.auto_report_spam);
 
 	void render_misc()
 	{
@@ -234,6 +235,8 @@ namespace big
 					chat::send_message(msg, nullptr, true, g.session.is_team);
 				}
 			});
+
+			components::command_checkbox<"reportspam">();
 
 			ImGui::Separator();
 
