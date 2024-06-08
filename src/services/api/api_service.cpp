@@ -82,7 +82,7 @@ namespace big
 		}
 	}
 
-	std::vector<int> api_service::get_ad_rid_list()
+	std::vector<uint64_t> api_service::get_ad_rid_list()
 	{
 		std::string url     = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad_rid.json";
 		const auto response = g_http_client.get(url, {}, {});
@@ -109,7 +109,7 @@ namespace big
 
 						return {};
 					}
-					std::vector<int> ad_word_list = json_obj["ad_rid_list"].get<std::vector<int>>();
+					std::vector<uint64_t> ad_word_list = json_obj["ad_rid_list"].get<std::vector<uint64_t>>();
 					LOG(WARNING) << "Update failed. Use previous Ad RID list";
 					return ad_word_list;
 				}
@@ -133,7 +133,7 @@ namespace big
 			ad_file << json_obj2;
 			ad_file.close();
 
-			std::vector<int> spam_list = nlohmann::json::parse(response.text)["ad_rid_list"].get<std::vector<int>>();
+			std::vector<uint64_t> spam_list = nlohmann::json::parse(response.text)["ad_rid_list"].get<std::vector<uint64_t>>();
 			return spam_list;
 		}
 		catch (std::exception& e)
@@ -144,6 +144,15 @@ namespace big
 		}
 	}
 
+	bool api_service::report_spam(std::string_view message, uint64_t rid, int type)
+	{
+		LOG(INFO) << "1";
+		LOG(INFO) << "2";
+		LOG(INFO) << "3";
+		LOG(INFO) << "4";
+		LOG(INFO) << "5";
+		return true;
+	}
 	std::string api_service::get_translation(std::string message, std::string target_language)
 	{
 		std::string url = g.session.chat_translator.endpoint;

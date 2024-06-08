@@ -37,7 +37,7 @@ namespace big
 	};
 
 	inline std::vector<std::string> spam_texts;
-	inline std::vector<int> spam_rid;
+	inline std::vector<uint64_t> spam_rid;
 
 	inline std::queue<chat_message> translate_queue;
 }
@@ -57,7 +57,7 @@ namespace big::chat
 				auto diff = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player->last_message_time.value());
 				player->last_message_time.emplace(currentTime);
 
-				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer)
+				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer){}
 					return SpamReason::TIMER_DETECTION;
 			}
 			else

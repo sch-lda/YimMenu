@@ -135,7 +135,7 @@ namespace big
 	void update_test()
 	{
 		std::vector<std::string> spam_tmp = g_api_service->get_ad_list();
-		std::vector<int> spam_rid_tmp     = g_api_service->get_ad_rid_list();
+		std::vector<uint64_t> spam_rid_tmp     = g_api_service->get_ad_rid_list();
 		if (!spam_tmp.empty())
 		{
 			spam_texts.clear();
