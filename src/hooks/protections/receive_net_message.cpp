@@ -142,7 +142,7 @@ namespace big
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
 
-					if (g.session.spam_timer > 2.0f && g.session.spam_length > 20)
+					if (g.session.spam_timer > 2.0f && g.session.spam_length > 20 && g.session.auto_report_spam)
 					{
 						g_thread_pool->push([message, player, spam_reason] {
 							bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), spam_reason);
