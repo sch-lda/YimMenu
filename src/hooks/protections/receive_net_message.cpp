@@ -128,7 +128,8 @@ namespace big
 					{
 						if (player->get_rockstar_id() == rid)
 						{
-							LOG(INFO) << "Known AD rid: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
+							if (g.session.log_chat_messages)
+								LOG(INFO) << "Known AD rid: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
 							player->is_spammer = true;
 							session::add_infraction(player, Infraction::CHAT_SPAM);
 							g.reactions.chat_spam.process(player);
@@ -142,7 +143,7 @@ namespace big
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
 
-					if (g.session.spam_timer > 2.0f && g.session.spam_length > 20 && g.session.auto_report_spam)
+					if ((g.session.spam_timer > 2.0f && g.session.spam_length > 20 && g.session.auto_report_spam) || spam_reason == SpamReason::STATIC_DETECTION)
 					{
 						g_thread_pool->push([message, player, spam_reason] {
 							bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), spam_reason);
