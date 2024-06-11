@@ -58,9 +58,7 @@ namespace big::chat
 				player->last_message_time.emplace(currentTime);
 
 				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer)
-				{
-				}
-				return SpamReason::TIMER_DETECTION;
+					return SpamReason::TIMER_DETECTION;
 			}
 			else
 			{
