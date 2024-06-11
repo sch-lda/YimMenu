@@ -270,6 +270,19 @@ namespace big
 			switch (msgType)
 			{
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
+			case rage::eNetMessage::MsgTextMessage:
+			{
+				char message[256];
+				rage::rlGamerHandle handle{};
+				bool is_team;
+				buffer.ReadString(message, sizeof(message));
+				gamer_handle_deserialize(handle, buffer);
+				buffer.ReadBool(&is_team);
+				if (chat::is_spam_text_only(message))
+				{
+					return true;
+				}
+			}
 			case rage::eNetMessage::MsgRadioStationSyncRequest:
 			{
 				static rate_limiter unk_player_radio_requests{1s, 6};

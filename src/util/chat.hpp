@@ -57,8 +57,10 @@ namespace big::chat
 				auto diff = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player->last_message_time.value());
 				player->last_message_time.emplace(currentTime);
 
-				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer){}
-					return SpamReason::TIMER_DETECTION;
+				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer)
+				{
+				}
+				return SpamReason::TIMER_DETECTION;
 			}
 			else
 			{
@@ -75,6 +77,21 @@ namespace big::chat
 				return SpamReason::STATIC_DETECTION;
 		}
 		return SpamReason::NOT_A_SPAMMER;
+	}
+
+	inline bool is_spam_text_only(const char* text)
+	{
+
+		for (auto e : spam_texts)
+		{
+			std::string e_str(e);
+			std::transform(e_str.begin(), e_str.end(), e_str.begin(), ::tolower);
+			std::string text_str(text);
+			std::transform(text_str.begin(), text_str.end(), text_str.begin(), ::tolower);
+			if (strstr(text_str.c_str(), e_str.c_str()) != 0)
+				return true;
+		}
+		return false;
 	}
 
 	inline void log_chat(char* msg, player_ptr player, SpamReason spam_reason, bool is_team)
