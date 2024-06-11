@@ -128,7 +128,7 @@ namespace big
 					{
 						if (player->get_rockstar_id() == rid)
 						{
-							if (g.session.log_chat_messages)
+							if (g.reactions.chat_spam.log)
 								LOG(INFO) << "Known AD rid: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
 							player->is_spammer = true;
 							session::add_infraction(player, Infraction::CHAT_SPAM);
