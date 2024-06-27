@@ -403,9 +403,11 @@ namespace big
 				{
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
+						const char* player_name      = player->get_name();
+						const char*& player_name_ref = player_name;
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 						g_notification_service.push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						    std::vformat("OOM_KICK"_T, std::make_format_args(player_name_ref)));
 						player->block_radio_requests = true;
 					}
 					return true;
@@ -657,9 +659,11 @@ namespace big
 			{
 				if (player->m_host_migration_rate_limit.exceeded_last_process())
 				{
+					const char* player_name      = player->get_name();
+					const char*& player_name_ref = player_name;
 					session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 					g_notification_service.push_error("PROTECTIONS"_T.data(),
-					    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+					    std::vformat("OOM_KICK"_T, std::make_format_args(player_name_ref)));
 				}
 				return true;
 			}
@@ -712,12 +716,6 @@ namespace big
 						player->is_spammer = true;
 						session::add_infraction(player, Infraction::CHAT_SPAM);
 						g.reactions.chat_spam.process(player);
-						if ((g.session.spam_timer <= 5.0f && g.session.spam_length > 20 && g.session.auto_report_spam) || spam_reason == SpamReason::STATIC_DETECTION)
-						{
-							g_thread_pool->push([message, player, spam_reason] {
-								bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), spam_reason);
-							});
-						}
 						return true;
 					}
 				}
@@ -732,6 +730,12 @@ namespace big
 				    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 				player->is_spammer = true;
 				g.reactions.chat_spam.process(player);
+				if ((g.session.spam_timer <= 5.0f && g.session.spam_length > 20 && g.session.auto_report_spam) || spam_reason == SpamReason::STATIC_DETECTION)
+				{
+					g_thread_pool->push([message, player, spam_reason] {
+						bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), spam_reason);
+					});
+				}
 				return true;
 			}
 			else

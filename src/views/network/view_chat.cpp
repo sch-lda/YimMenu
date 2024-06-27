@@ -88,5 +88,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 		}	
+
+		components::command_checkbox<"reportspam">();
 	}
 }

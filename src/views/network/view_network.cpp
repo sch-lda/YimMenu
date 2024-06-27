@@ -318,10 +318,8 @@ namespace big
 					ImGui::SetItemDefaultFocus();
 				}
 			}
-
-			components::command_checkbox<"reportspam">();
-
-			ImGui::Separator();
+			ImGui::EndCombo();
+		}
 
 		ImGui::SameLine();
 
