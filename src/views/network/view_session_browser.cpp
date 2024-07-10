@@ -7,6 +7,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
+#include "util/chat.hpp"
 
 #include <network/Network.hpp>
 
@@ -45,6 +46,15 @@ namespace big
 
 					if (g.session_browser.exclude_modder_sessions && player && player->block_join)
 						continue;
+
+					if (g.session_browser.exclude_ad_sessions)
+					{
+						for (auto rid : spam_rid)
+						{
+							if (rid == host_rid)
+								continue;
+						}
+					}
 
 					if (components::selectable(session_str, i == selected_session_idx))
 					{
