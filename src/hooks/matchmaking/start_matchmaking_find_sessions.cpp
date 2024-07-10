@@ -3,6 +3,7 @@
 #include "hooking/hooking.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "util/chat.hpp"
 
 #include <network/Network.hpp>
 
@@ -32,6 +33,15 @@ namespace big
 							
 							if (g.session_browser.exclude_modder_sessions && player && player->block_join)
 								continue;
+
+							if (g.session_browser.exclude_ad_sessions)
+							{
+								for (auto rid : spam_rid)
+								{
+									if (rid == host_rid)
+										continue;
+								}
+							}
 
 							results[*num_sessions_found] = g_matchmaking_service->get_found_sessions()[i].info;
 							(*num_sessions_found)++;

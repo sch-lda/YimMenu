@@ -179,6 +179,10 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
 
+			ImGui::Checkbox("EXCLUDE SPAMMER SESSIONS", &g.session_browser.exclude_ad_sessions);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("EXCLUDE SPAMMER SESSIONS DESC");
+
 			ImGui::TreePop();
 		}
 
