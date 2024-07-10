@@ -27,6 +27,8 @@ namespace big
 					{
 						if (g_matchmaking_service->get_found_sessions()[i].is_valid)
 						{
+							int is_host_spam = 0;
+
 							auto host_rid =
 							    g_matchmaking_service->get_found_sessions()[i].info.m_net_player_data.m_gamer_handle.m_rockstar_id;
 							auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
@@ -39,9 +41,12 @@ namespace big
 								for (auto rid : spam_rid)
 								{
 									if (rid == host_rid)
-										continue;
+										is_host_spam = 1;
 								}
 							}
+
+							if (is_host_spam == 1)
+								continue;
 
 							results[*num_sessions_found] = g_matchmaking_service->get_found_sessions()[i].info;
 							(*num_sessions_found)++;

@@ -30,6 +30,7 @@ namespace big
 			{
 				for (int i = 0; i < g_matchmaking_service->get_num_found_sessions(); i++)
 				{
+					int is_host_spam = 0;
 					auto& session = g_matchmaking_service->get_found_sessions()[i];
 
 					if (!session.is_valid)
@@ -52,9 +53,12 @@ namespace big
 						for (auto rid : spam_rid)
 						{
 							if (rid == host_rid)
-								continue;
+								is_host_spam = 1;
 						}
 					}
+
+					if (is_host_spam == 1)
+						continue;
 
 					if (components::selectable(session_str, i == selected_session_idx))
 					{
