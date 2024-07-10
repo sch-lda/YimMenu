@@ -38,7 +38,11 @@ namespace big
 
 					std::string session_str;
 					if (session.attributes.multiplex_count > 1)
+					{
+						if (g.session_browser.filter_multiplexed_sessions)
+							continue;
 						session_str = std::format("{:X} (x{})", session.info.m_session_token, session.attributes.multiplex_count);
+					}
 					else
 						session_str = std::format("{:X}", session.info.m_session_token);
 
