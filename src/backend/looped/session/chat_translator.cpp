@@ -80,6 +80,11 @@ namespace big
 							LOG(INFO) << "[" << first_message.sender << "]" << first_message.content << " --> " << translate_result;
 					}
 				}
+				else
+				{
+					if (first_message.issend == true)
+						chat::send_message(first_message.content, nullptr, true, first_message.isteam);					
+				}
 			});
 			translate_queue.pop();
 		}
