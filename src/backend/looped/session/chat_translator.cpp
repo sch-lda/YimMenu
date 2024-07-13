@@ -56,6 +56,7 @@ namespace big
 					else
 						translate_result =
 					    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang);
+					break;
 				case 4:
 					if (first_message.issend == true)
 						translate_result =
