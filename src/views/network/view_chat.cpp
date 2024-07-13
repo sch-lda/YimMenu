@@ -56,6 +56,19 @@ namespace big
 				chat::send_message(msg, nullptr, true, g.session.is_team);
 			}
 		});
+		ImGui::SameLine();
+		if (g.session.chat_translator.enabled)
+		{
+			components::button("翻译并发送", [] {
+				chat_message messagetoadd{"me", msg, true, g.session.is_team};
+				translate_queue.push(messagetoadd);
+			});
+		}
+		else
+		{
+			components::button("开启聊天翻译以使用翻译并发送功能", [] {
+			});
+		}
 
 		ImGui::Separator();
 
@@ -100,6 +113,7 @@ namespace big
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::Checkbox("仅翻译上方翻译并发送功能的消息,忽略传入消息", &g.session.chat_translator.switch_send_only);
 
 
 			ImGui::Checkbox("TRANSLATOR_HIDE_SAME_LANGUAGE"_T.data(), &g.session.chat_translator.bypass_same_language);
@@ -114,7 +128,7 @@ namespace big
 			{
 				static const auto BingTargetLang = std::to_array<BingTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bangla"}, {"bg", "Bulgarian"}, {"zh-Hans", "Chinese Simplified"}, {"zh-Hant", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"nb", "Norwegian(Bokmål)"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"pt-br", "Portuguese(Brazilian)"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
 
-				if (ImGui::BeginCombo("目标语言##BingTargetLanguage", g.session.chat_translator.Bing_target_lang.c_str()))
+				if (ImGui::BeginCombo("目标语言(接收)##BingTargetLanguage", g.session.chat_translator.Bing_target_lang.c_str()))
 				{
 					for (const auto& [type, name] : BingTargetLang)
 					{
@@ -124,6 +138,18 @@ namespace big
 					}
 					ImGui::EndCombo();
 				}
+
+				if (ImGui::BeginCombo("目标语言(发送)##BingTargetLanguagesend", g.session.chat_translator.Bing_target_lang_send.c_str()))
+				{
+					for (const auto& [type, name] : BingTargetLang)
+					{
+						components::selectable(name, false, [&type] {
+							g.session.chat_translator.Bing_target_lang_send = type;
+						});
+					}
+					ImGui::EndCombo();
+				}
+
 				components::button("重新获取token", [] {
 					ms_token_str = "";
 				});
@@ -132,12 +158,23 @@ namespace big
 			{
 				static const auto GoogleTargetLang = std::to_array<GoogleTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bg", "Bulgarian"}, {"zh-CN", "Chinese Simplified"}, {"zh-TW", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"n0", "Norwegian"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
 
-				if (ImGui::BeginCombo("目标语言##GoogleTargetLangSwitcher", g.session.chat_translator.Google_target_lang.c_str()))
+				if (ImGui::BeginCombo("目标语言(接收)##GoogleTargetLangSwitcher", g.session.chat_translator.Google_target_lang.c_str()))
 				{
 					for (const auto& [type, name] : GoogleTargetLang)
 					{
 						components::selectable(name, false, [&type] {
 							g.session.chat_translator.Google_target_lang = type;
+						});
+					}
+					ImGui::EndCombo();
+				}
+				if (ImGui::BeginCombo("目标语言(发送)##GoogleTargetLangSwitchersend",
+				        g.session.chat_translator.Google_target_lang_send.c_str()))
+				{
+					for (const auto& [type, name] : GoogleTargetLang)
+					{
+						components::selectable(name, false, [&type] {
+							g.session.chat_translator.Google_target_lang_send = type;
 						});
 					}
 					ImGui::EndCombo();
@@ -150,12 +187,23 @@ namespace big
 
 				components::input_text_with_hint("DeepLx URL", "http://127.0.0.1:1188/translate", g.session.chat_translator.DeepLx_url);
 
-				if (ImGui::BeginCombo("目标语言##DeepLTargetLangSwitcher", g.session.chat_translator.DeepL_target_lang.c_str()))
+				if (ImGui::BeginCombo("目标语言(接收)##DeepLTargetLangSwitcher", g.session.chat_translator.DeepL_target_lang.c_str()))
 				{
 					for (const auto& [type, name] : DeepLTargetLang)
 					{
 						components::selectable(name, false, [&type] {
 							g.session.chat_translator.DeepL_target_lang = type;
+						});
+					}
+					ImGui::EndCombo();
+				}
+				if (ImGui::BeginCombo("目标语言(发送)##DeepLTargetLangSwitchersend",
+				        g.session.chat_translator.DeepL_target_lang_send.c_str()))
+				{
+					for (const auto& [type, name] : DeepLTargetLang)
+					{
+						components::selectable(name, false, [&type] {
+							g.session.chat_translator.DeepL_target_lang_send = type;
 						});
 					}
 					ImGui::EndCombo();
@@ -178,7 +226,8 @@ namespace big
 				    "http://localhost:5000/translate",
 				    g.session.chat_translator.Libre_endpoint);
 
-				if (ImGui::BeginCombo("TRANSLATOR_TARGET_LANGUAGE"_T.data(), g.session.chat_translator.Libre_target_lang.c_str()))
+				if (ImGui::BeginCombo("目标语言(接收)##LibreTargetLangSwitcher",
+				        g.session.chat_translator.Libre_target_lang.c_str()))
 				{
 					for (const auto& [type, name] : target_language)
 					{
@@ -188,10 +237,21 @@ namespace big
 					}
 					ImGui::EndCombo();
 				}
+				if (ImGui::BeginCombo("目标语言(发送)##LibreTargetLangSwitchersend",
+				        g.session.chat_translator.Libre_target_lang_send.c_str()))
+				{
+					for (const auto& [type, name] : target_language)
+					{
+						components::selectable(name, false, [&type] {
+							g.session.chat_translator.Libre_target_lang_send = type;
+						});
+					}
+					ImGui::EndCombo();
+				}
 			}
 
 			components::button("发送英文测试消息", [] {
-				chat_message messagetoadd{"testsender", "This is a test message"};
+				chat_message messagetoadd{"testsender", "This is a test message", false, false};
 				translate_queue.push(messagetoadd);
 			});
 		}	

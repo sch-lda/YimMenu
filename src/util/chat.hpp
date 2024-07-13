@@ -34,6 +34,8 @@ namespace big
 	{
 		std::string sender;
 		std::string content;
+		bool issend;
+		bool isteam;
 	};
 
 	inline std::vector<std::string> spam_texts;

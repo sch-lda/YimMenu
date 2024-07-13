@@ -746,9 +746,9 @@ namespace big
 			{
 				if (g.session.log_chat_messages)
 					chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
-				if (g.session.chat_translator.enabled)
+				if (g.session.chat_translator.enabled && !g.session.chat_translator.switch_send_only)
 				{
-					chat_message new_message{player->get_name(), message};
+					chat_message new_message{player->get_name(), message, false, false};
 					translate_queue.push(new_message);
 				}
 
