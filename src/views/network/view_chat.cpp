@@ -67,6 +67,7 @@ namespace big
 		else
 		{
 			components::button("开启聊天翻译以使用翻译并发送功能", [] {
+				g.session.chat_translator.enabled = true;
 			});
 		}
 
