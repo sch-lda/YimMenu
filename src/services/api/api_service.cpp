@@ -220,16 +220,16 @@ namespace big
 			catch (std::exception& e)
 			{
 				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << e.what();
-				return "Error";
+				return "";
 			}
 		}
 		else
 		{
 			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
-			return "Error";
+			return "";
 		}
 
-		return "Error";
+		return "";
 	}
 
 	std::string api_service::get_translation_from_Bing(std::string message, std::string tar_lang)
@@ -268,14 +268,14 @@ namespace big
 			else
 			{
 				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << response.text;
-				return "Error";
+				return "";
 			}
 		}
 		else
 		{
 			LOG(WARNING) << "json data" << response.text;
 			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
-			return "Error";
+			return "";
 		}
 	}
 
@@ -311,14 +311,14 @@ namespace big
 			catch (std::exception& e)
 			{
 				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << e.what();
-				return "Error";
+				return "";
 			}
 		}
 		else
 		{
 			LOG(WARNING) << "json data" << response.text;
 			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
-			return "Error";
+			return "";
 		}
 	}
 
@@ -350,14 +350,14 @@ namespace big
 			catch (std::exception& e)
 			{
 				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << e.what();
-				return "Error";
+				return "";
 			}
 		}
 		else
 		{
 			LOG(WARNING) << "json data" << response.text;
 			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
-			return "Error";
+			return "";
 		}
 	}
 
