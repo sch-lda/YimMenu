@@ -4,8 +4,8 @@
 
 namespace big
 {
-    constexpr auto CONNECT_TIMEOUT = 1000;
-    constexpr auto REQUEST_TIMEOUT = 5000;
+    constexpr auto CONNECT_TIMEOUT = 5000;
+    constexpr auto REQUEST_TIMEOUT = 8000;
 
     class http_client
     {

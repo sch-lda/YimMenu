@@ -21,12 +21,8 @@ namespace big
 		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
 		bool loaded_remote_index = false;
-		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)
-		{
-			if (i)
-				LOG(WARNING) << "Failed to download remote index, trying again... (" << i << ")";
-			loaded_remote_index = download_index();
-		}
+
+		loaded_remote_index = download_index();
 
 		if (load_local_index())
 		{

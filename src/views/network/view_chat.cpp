@@ -210,9 +210,10 @@ namespace big
 				}
 			}
 
-			if (ImGui::CollapsingHeader("OpenAI Settings"_T.data()))
+			if (ImGui::CollapsingHeader("OpenAI设置"))
 			{
 				components::input_text_with_hint("OpenAI端点", "https://api.openai.com/", g.session.chat_translator.OpenAI_endpoint);
+				ImGui::Text("可使用兼容OpenAI格式的任何第三方站点,包括deepseek/Yi/GLM等国产API");
 				components::input_text_with_hint("OpenAI token", "sk-*", g.session.chat_translator.OpenAI_key);
 				components::input_text_with_hint("模型", "gpt-3.5-turbo", g.session.chat_translator.OpenAI_model);
 				components::input_text_with_hint("目标语言(接收)##OpenAI", "Chinese", g.session.chat_translator.OpenAI_target_lang);
