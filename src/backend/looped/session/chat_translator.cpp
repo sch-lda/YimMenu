@@ -23,7 +23,28 @@ namespace big
 			g_thread_pool->push([first_message] {
 				std::string translate_result;
 				std::string sender = "[T]" + first_message.sender;
-				translate_result   = g_api_service->get_translation(first_message.content, g.session.chat_translator.target_language);
+				switch (g.session.chat_translator.t_service_provider)
+				{
+				case 0:
+					translate_result =
+					    g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang);
+					break;
+				case 1:
+					translate_result =
+					    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang);
+					break;
+				case 2:
+					translate_result =
+					    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang);
+					break;
+				case 3:
+					translate_result =
+					    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang);
+				case 4:
+					translate_result =
+					    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang);
+					break;
+				}
 
 				translate_lock = false;
 				if (translate_result != "")

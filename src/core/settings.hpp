@@ -490,10 +490,21 @@ namespace big
 				bool print_result           = false;
 				bool draw_result            = true;
 				bool bypass_same_language   = true;
-				std::string target_language = "en";
-				std::string endpoint        = "http://localhost:5000/translate";
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
+				int t_service_provider         = 0;
+				std::string DeepL_target_lang  = "ZH";
+				std::string Bing_target_lang   = "zh-Hans";
+				std::string Google_target_lang = "zh-CN";
+				std::string DeepLx_url         = "http://127.0.0.1:1188/translate";
+				std::string OpenAI_endpoint    = "https://api.openai.com/v1/chat/completions";
+				std::string OpenAI_key         = "";
+				std::string OpenAI_model       = "gpt-3.5-turbo";
+				std::string OpenAI_target_lang = "Chinese";
+				std::string Libre_target_lang  = "en";
+				std::string Libre_endpoint     = "http://localhost:5000/translate";
+
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, t_service_provider, DeepL_target_lang, Bing_target_lang, Google_target_lang, DeepLx_url, OpenAI_endpoint, OpenAI_key, OpenAI_model, OpenAI_target_lang, Libre_target_lang, Libre_endpoint);
 			} chat_translator{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, spoof_host_token_type, custom_host_token, hide_token_spoofing_when_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, auto_report_spam, chat_translator, script_block_opts)
