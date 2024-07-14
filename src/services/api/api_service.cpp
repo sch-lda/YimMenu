@@ -19,6 +19,21 @@ namespace big
 		g_api_service = nullptr;
 	}
 
+	std::string urlCJKEncode(const std::string& cjkstr)
+	{
+		std::ostringstream procstr;
+		procstr.fill('0');
+		procstr << std::hex;
+		for (char c : cjkstr)
+		{
+			if (isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_' || c == '.' || c == '~')
+				procstr << c;
+			else
+				procstr << '%' << std::setw(2) << std::uppercase << static_cast<int>(static_cast<unsigned char>(c));
+		}
+		return procstr.str();
+	}
+
 	std::vector<std::string> api_service::get_ad_list()
 	{
 		std::string url = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad.json";
@@ -162,7 +177,7 @@ namespace big
 		}
 	}
 
-	std::string api_service::get_translation_from_Libre(std::string message, std::string target_language)
+	std::string api_service::get_translation_from_Libre(std::string message, std::string target_language, bool issend)
 	{
 		std::string url = g.session.chat_translator.Libre_endpoint;
 		const auto response = g_http_client.post(url,
@@ -175,7 +190,7 @@ namespace big
 				std::string source_language = obj["detectedLanguage"]["language"];
 				std::string result = obj["translatedText"];
 
-				if (source_language == g.session.chat_translator.Libre_target_lang && g.session.chat_translator.bypass_same_language)
+				if (source_language == g.session.chat_translator.Libre_target_lang && g.session.chat_translator.bypass_same_language && !issend)
 					return "";
 				return result;
 			}
@@ -200,7 +215,7 @@ namespace big
 		return "";
 	}
 
-	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
+	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang, bool issend)
 	{
 		std::string url = g.session.chat_translator.DeepLx_url;
 		const auto response = g_http_client.post(url, {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, tar_lang));
@@ -212,8 +227,8 @@ namespace big
 
 				std::string result     = obj["data"];
 				std::string sourcelang = obj["source_lang"];
-				if (sourcelang == g.session.chat_translator.DeepL_target_lang && g.session.chat_translator.bypass_same_language)
-					return "None";
+				if (sourcelang == g.session.chat_translator.DeepL_target_lang && g.session.chat_translator.bypass_same_language && !issend)
+					return "";
 				return result;
 			}
 
@@ -232,7 +247,7 @@ namespace big
 		return "";
 	}
 
-	std::string api_service::get_translation_from_Bing(std::string message, std::string tar_lang)
+	std::string api_service::get_translation_from_Bing(std::string message, std::string tar_lang, bool issend)
 	{
 		const std::string bing_auth_url = "https://edge.microsoft.com/translate/auth";
 		cpr::Response auth_response;
@@ -261,8 +276,8 @@ namespace big
 			if (result[0]["translations"].is_array())
 			{
 				std::string source_lang = result[0]["detectedLanguage"]["language"].get<std::string>();
-				if (source_lang == g.session.chat_translator.Bing_target_lang && g.session.chat_translator.bypass_same_language)
-					return "None";
+				if (source_lang == g.session.chat_translator.Bing_target_lang && g.session.chat_translator.bypass_same_language && !issend)
+					return "";
 				return result[0]["translations"][0]["text"].get<std::string>();
 			}
 			else
@@ -279,9 +294,10 @@ namespace big
 		}
 	}
 
-	std::string api_service::get_translation_from_Google(std::string message, std::string tar_lang)
+	std::string api_service::get_translation_from_Google(std::string message, std::string tar_lang, bool issend)
 	{
-		const std::string url = std::format("https://translate.google.com/translate_a/single?dt=t&client=gtx&sl=auto&q={}&tl={}", message, tar_lang);
+		std::string procmsg = urlCJKEncode(message);
+		const std::string url = std::format("https://translate.google.com/translate_a/single?dt=t&client=gtx&sl=auto&q={}&tl={}", procmsg, tar_lang);
 		std::string encoded_url;
 		for (char c : url)
 		{
@@ -303,8 +319,8 @@ namespace big
 
 				std::string result = obj[0][0][0];
 				auto& array        = obj.back().back();
-				if (array[0] == g.session.chat_translator.Google_target_lang && g.session.chat_translator.bypass_same_language)
-					return "None";
+				if (array[0] == g.session.chat_translator.Google_target_lang && g.session.chat_translator.bypass_same_language && !issend)
+					return "";
 				return result;
 			}
 
@@ -322,7 +338,7 @@ namespace big
 		}
 	}
 
-	std::string api_service::get_translation_from_OpenAI(std::string message, std::string tar_lang)
+	std::string api_service::get_translation_from_OpenAI(std::string message, std::string tar_lang, bool issend)
 	{
 		std::string body = std::format(R"(
         {{

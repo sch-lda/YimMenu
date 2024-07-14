@@ -28,42 +28,42 @@ namespace big
 				case 0:
 					if (first_message.issend == true)
 						translate_result =
-						g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang_send);
+						    g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang_send, true);
 					else
 						translate_result =
-						g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang);
+						    g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang, false);
 					break;
 				case 1:
 					if (first_message.issend == true)
 						translate_result =
-					    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang_send);
+						    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang_send, true);
 					else
 						translate_result =
-					    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang);
+						    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang, false);
 					break;
 				case 2:
 					if (first_message.issend == true)
 						translate_result =
-					    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang_send);
+					    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang_send, true);
 					else
 						translate_result =
-					    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang);
+						    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang, false);
 					break;
 				case 3:
 					if (first_message.issend == true)
 						translate_result =
-					    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang_send);
+						    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang_send, true);
 					else
 						translate_result =
-					    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang);
+						    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang, false);
 					break;
 				case 4:
 					if (first_message.issend == true)
 						translate_result =
-					    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang_send);
+						    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang_send, true);
 					else
 						translate_result =
-					    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang);
+						    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang, false);
 					break;
 				}
 
