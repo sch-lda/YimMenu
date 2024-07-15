@@ -706,6 +706,8 @@ namespace big
 			if (player->is_spammer)
 				return true;
 
+			auto spam_reason = chat::is_text_spam(message, player);
+
 			if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 			{
 				for (auto rid : spam_rid)
@@ -717,12 +719,16 @@ namespace big
 						player->is_spammer = true;
 						session::add_infraction(player, Infraction::CHAT_SPAM);
 						g.reactions.chat_spam.process(player);
+						if (spam_reason == 1)
+						{
+							g_thread_pool->push([message, player, spam_reason] {
+								bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), 5);
+							});
+						}
 						return true;
 					}
 				}
 			}
-
-			auto spam_reason = chat::is_text_spam(message, player);
 
 			if (spam_reason != 0
 			    && (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session)))
