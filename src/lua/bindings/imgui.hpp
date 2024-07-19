@@ -3,9 +3,10 @@
 namespace lua::imgui
 {
 	// Windows
-	inline bool Begin(const std::string& name)
+	inline bool Begin(const std::string& name, sol::this_state state)
 	{
-		return ImGui::Begin(name.c_str());
+		std::string new_name = "[" + sol::state_view(state)["!module_name"].get<std::string>() + "] " + name;
+		return ImGui::Begin(new_name.c_str());
 	}
 	inline bool Begin(const std::string& name, int flags)
 	{
@@ -3250,7 +3251,7 @@ namespace lua::imgui
 		sol::table ImGui(lua, sol::create);
 
 #pragma region Windows
-		ImGui.set_function("Begin", sol::overload(sol::resolve<bool(const std::string&)>(Begin), sol::resolve<bool(const std::string&, int)>(Begin), sol::resolve<std::tuple<bool, bool>(const std::string&, bool)>(Begin), sol::resolve<std::tuple<bool, bool>(const std::string&, bool, int)>(Begin)));
+		ImGui.set_function("Begin", sol::overload(sol::resolve<bool(const std::string&, sol::this_state state)>(Begin), sol::resolve<bool(const std::string&, int)>(Begin), sol::resolve<std::tuple<bool, bool>(const std::string&, bool)>(Begin), sol::resolve<std::tuple<bool, bool>(const std::string&, bool, int)>(Begin)));
 		ImGui.set_function("End", End);
 #pragma endregion Windows
 
