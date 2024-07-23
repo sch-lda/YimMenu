@@ -921,6 +921,7 @@ namespace big
 				bool enable              = false;
 				int64_t only_on_ped_type = -1;
 				bool only_on_player      = false;
+				bool exclude_friends     = false;
 				bool only_on_enemy       = false;
 				bool has_target          = false;
 				float fov                = 60.f;
