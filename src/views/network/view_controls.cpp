@@ -126,7 +126,7 @@ namespace big
 	void render_force_host_options()
 	{
 		ImGui::BeginGroup();
-		components::small_text("FORCE_HOST"_T);
+		components::small_text("强制成为主机-请在故事模式修改此设置");
 
 		static constexpr auto token_spoof_types = std::to_array({"SPOOF_HOST_TOKEN_OFF", "SPOOF_HOST_TOKEN_TYPE_LEGIT", "SPOOF_HOST_TOKEN_TYPE_AGGRESSIVE", "SPOOF_HOST_TOKEN_TYPE_EXTRA_AGGRESSIVE", "SPOOF_HOST_TOKEN_TYPE_CUSTOM"});
 
@@ -158,8 +158,6 @@ namespace big
 		if (g.session.spoof_host_token_type != 0)
 		{
 			ImGui::Checkbox("HIDE_TOKEN_SPOOFING_WHEN_HOST"_T.data(), &g.session.hide_token_spoofing_when_host);
-			ImGui::SameLine();
-			ImGui::Checkbox("自动踢出主机", &g.session.kick_host_when_forcing_host);
 		}
 
 		if (g.session.spoof_host_token_type == 4)
@@ -172,6 +170,12 @@ namespace big
 		}
 
 		ImGui::EndDisabled();
+
+		if (g.session.spoof_host_token_type != 0)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("自动踢出主机", &g.session.kick_host_when_forcing_host);
+		}
 
 		//if (g.session.force_session_host)
 		//{
