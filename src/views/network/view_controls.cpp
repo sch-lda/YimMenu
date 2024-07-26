@@ -158,6 +158,8 @@ namespace big
 		if (g.session.spoof_host_token_type != 0)
 		{
 			ImGui::Checkbox("HIDE_TOKEN_SPOOFING_WHEN_HOST"_T.data(), &g.session.hide_token_spoofing_when_host);
+			ImGui::SameLine();
+			ImGui::Checkbox("自动踢出主机", &g.session.kick_host_when_forcing_host);
 		}
 
 		if (g.session.spoof_host_token_type == 4)
