@@ -285,6 +285,11 @@ namespace big
 				return "";
 			}
 		}
+		else if (response.status_code == 401)
+		{
+			ms_token_str = "";
+			return get_translation_from_Bing(message, tar_lang, issend);
+		}
 		else
 		{
 			LOG(WARNING) << "json data" << response.text;
