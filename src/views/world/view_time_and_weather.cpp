@@ -18,11 +18,12 @@ namespace big
 
 		if (g.world.override_weather)
 		{
-			if (ImGui::BeginCombo("VIEW_TIME_AND_WEATHER_WEATHER"_T.data(), weathers[g.world.local_weather]))
+			if (ImGui::BeginCombo("VIEW_TIME_AND_WEATHER_WEATHER"_T.data(),
+			        g_translation_service.get_translation(weathers[g.world.local_weather]).data()))
 			{
 				for (int i = 0; i < weathers.size(); i++)
 				{
-					if (ImGui::Selectable(weathers[i], g.world.local_weather == i))
+					if (ImGui::Selectable(g_translation_service.get_translation(weathers[i]).data(), g.world.local_weather == i))
 					{
 						g.world.local_weather = i;
 					}

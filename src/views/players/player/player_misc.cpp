@@ -33,7 +33,7 @@ namespace big
 		ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
 		ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g_player_service->get_selected()->fix_vehicle);
 
-		components::button("Trigger UFO Abduction", [] {
+		components::button("TRIGGER_UFO_ABDUCTION"_T.data(), [] {
 			scripts::force_host("freemode"_J);
 			g_player_service->get_selected()->script_host_mission = 9999;
 			scripts::force_script_on_player(g_player_service->get_selected(), "fm_content_ufo_abduction"_J, g_player_service->get_selected()->id());
@@ -45,7 +45,7 @@ namespace big
 		});
 
 		// Broken
-		components::button("Trigger Pizza Delivery", [] {
+		components::button("TRIGGER_PIZZA_DELIVERY"_T.data(), [] {
 			scripts::force_host("freemode"_J);
 			g_player_service->get_selected()->script_host_mission = 9999;
 			scripts::force_script_on_player(g_player_service->get_selected(), "fm_content_pizza_delivery"_J);

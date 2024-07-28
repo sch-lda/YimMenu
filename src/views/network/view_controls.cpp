@@ -65,7 +65,7 @@ namespace big
 		ImGui::SetNextItemWidth(300);
 		ImGui::SliderInt("##bountyvalue", &value, 0, 10000);
 		components::command_checkbox<"anonbounty">();
-		components::button("Bounty All", [] {
+		components::button("BOUNTY_ALL"_T.data(), [] {
 			g_player_service->iterate([](auto& plyr) {
 				troll::set_bounty_on_player(plyr.second, value, g.session.anonymous_bounty);
 			});
