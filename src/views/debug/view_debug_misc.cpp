@@ -5,6 +5,7 @@
 #include "util/system.hpp"
 #include "view_debug.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
+#include "lua/lua_manager.hpp"
 
 namespace big
 {
@@ -98,6 +99,11 @@ namespace big
 			ImGui::Checkbox("VIEW_DEBUG_MISC_IMGUI_DEMO"_T.data(), &g.window.demo);
 
 			components::command_button<"fastquit">();
+
+			components::button("解除注入(存在反作弊检测风险)", [] {
+				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
+				g_running = false;
+			});
 
 			if (ImGui::TreeNode("VIEW_DEBUG_MISC_FUZZER"_T.data()))
 			{
