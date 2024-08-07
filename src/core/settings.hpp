@@ -972,6 +972,8 @@ namespace big
 			bool demo          = false;
 			bool switched_view = true;
 
+			bool open_on_inject = true;
+
 			struct ingame_overlay
 			{
 				bool opened                = true;
@@ -1021,7 +1023,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gui, format_money)
 			} gui{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators, gui)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, open_on_inject, ingame_overlay, vehicle_control, ingame_overlay_indicators, gui)
 		} window{};
 
 		struct context_menu

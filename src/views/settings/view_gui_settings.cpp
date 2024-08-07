@@ -5,6 +5,8 @@ namespace big
 {
 	void view::gui_settings()
 	{
+		ImGui::Checkbox("注入后立即显示菜单", &g.window.open_on_inject);
+
 		components::sub_title("SETTINGS_UI_SCALE"_T);
 		static auto gui_scale = g.window.gui_scale;
 		ImGui::SliderFloat("##gui-scale", &gui_scale, 0.75f, 1.5f, "%.2f");

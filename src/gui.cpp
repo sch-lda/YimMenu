@@ -68,6 +68,12 @@ namespace big
 
 		g_gui = this;
 		g_renderer.rescale(g.window.gui_scale);
+
+		if (g.window.open_on_inject)
+		{
+			m_is_open = true;
+			toggle_mouse();
+		}
 	}
 
 	gui::~gui()
