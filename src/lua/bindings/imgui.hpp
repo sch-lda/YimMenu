@@ -1,4 +1,5 @@
 #pragma once
+#include "services/translation_service/translation_service.hpp"
 
 namespace lua::imgui
 {
@@ -554,7 +555,8 @@ namespace lua::imgui
 	}
 	inline void Text(const std::string& text)
 	{
-		ImGui::TextUnformatted(text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text).data();
+		ImGui::TextUnformatted(translated_name.c_str());
 	} // TODO - make this proper call to ImGui::Text, allowing real formatting!
 	inline void TextColored(float colR, float colG, float colB, float colA, const std::string& text)
 	{
@@ -580,15 +582,19 @@ namespace lua::imgui
 	// Widgets: Main
 	inline bool Button(const std::string& label)
 	{
-		return ImGui::Button(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+		return ImGui::Button(translated_name.c_str());
 	}
 	inline bool Button(const std::string& label, float sizeX, float sizeY)
 	{
-		return ImGui::Button(label.c_str(), {sizeX, sizeY});
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+		return ImGui::Button(translated_name.c_str(), {sizeX, sizeY});
 	}
 	inline bool SmallButton(const std::string& label)
 	{
-		return ImGui::SmallButton(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		return ImGui::SmallButton(translated_name.c_str());
 	}
 	inline bool InvisibleButton(const std::string& stringID, float sizeX, float sizeY)
 	{
@@ -656,6 +662,8 @@ namespace lua::imgui
 	}
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const sol::table& items, int itemsCount)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
 		std::vector<std::string> strings;
 		strings.reserve(itemsCount);
 		std::vector<const char*> cstrings;
@@ -666,11 +674,13 @@ namespace lua::imgui
 			cstrings.emplace_back(strings.emplace_back(std::move(stringItem.value_or("Missing"))).c_str());
 		}
 
-		bool clicked = ImGui::Combo(label.c_str(), &currentItem, cstrings.data(), itemsCount);
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, cstrings.data(), itemsCount);
 		return std::make_tuple(currentItem, clicked);
 	}
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const sol::table& items, int itemsCount, int popupMaxHeightInItems)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
 		std::vector<std::string> strings;
 		strings.reserve(itemsCount);
 		std::vector<const char*> cstrings;
@@ -681,17 +691,21 @@ namespace lua::imgui
 			cstrings.emplace_back(strings.emplace_back(std::move(stringItem.value_or("Missing"))).c_str());
 		}
 
-		bool clicked = ImGui::Combo(label.c_str(), &currentItem, cstrings.data(), itemsCount, popupMaxHeightInItems);
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, cstrings.data(), itemsCount, popupMaxHeightInItems);
 		return std::make_tuple(currentItem, clicked);
 	}
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const std::string& itemsSeparatedByZeros)
 	{
-		bool clicked = ImGui::Combo(label.c_str(), &currentItem, itemsSeparatedByZeros.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, itemsSeparatedByZeros.c_str());
 		return std::make_tuple(currentItem, clicked);
 	}
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const std::string& itemsSeparatedByZeros, int popupMaxHeightInItems)
 	{
-		bool clicked = ImGui::Combo(label.c_str(), &currentItem, itemsSeparatedByZeros.c_str(), popupMaxHeightInItems);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, itemsSeparatedByZeros.c_str(), popupMaxHeightInItems);
 		return std::make_tuple(currentItem, clicked);
 	}
 	// TODO: 3rd Combo from ImGui not Supported
@@ -1950,7 +1964,9 @@ namespace lua::imgui
 	// Widgets: Trees
 	inline bool TreeNode(const std::string& label)
 	{
-		return ImGui::TreeNode(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		return ImGui::TreeNode(translated_name.c_str());
 	}
 	inline bool TreeNode(const std::string& label, const std::string& fmt)
 	{
@@ -2014,21 +2030,29 @@ namespace lua::imgui
 	// TODO: Only one of Selectable variations is possible due to same parameters for Lua
 	inline bool Selectable(const std::string& label)
 	{
-		return ImGui::Selectable(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		return ImGui::Selectable(translated_name.c_str());
 	}
 	inline bool Selectable(const std::string& label, bool selected)
 	{
-		ImGui::Selectable(label.c_str(), &selected);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		ImGui::Selectable(translated_name.c_str(), &selected);
 		return selected;
 	}
 	inline bool Selectable(const std::string& label, bool selected, int flags)
 	{
-		ImGui::Selectable(label.c_str(), &selected, flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		ImGui::Selectable(translated_name.c_str(), &selected, flags);
 		return selected;
 	}
 	inline bool Selectable(const std::string& label, bool selected, int flags, float sizeX, float sizeY)
 	{
-		ImGui::Selectable(label.c_str(), &selected, flags, {sizeX, sizeY});
+		std::string translated_name = big::g_translation_service.get_lua_translation(label).data();
+
+		ImGui::Selectable(translated_name.c_str(), &selected, flags, {sizeX, sizeY});
 		return selected;
 	}
 

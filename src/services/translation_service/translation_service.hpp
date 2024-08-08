@@ -9,7 +9,7 @@
 namespace big
 {
 	using translation_map = std::unordered_map<rage::joaat_t, std::string>;
-	using translation_map_lua = std::unordered_map<rage::joaat_t, std::string>;
+	using translation_map_lua = std::unordered_map<std::string, std::string>;
 
 	class translation_service
 	{
@@ -24,7 +24,7 @@ namespace big
 		void init();
 
 		std::string_view get_translation(const std::string_view translation_key) const;
-		std::string_view get_lua_translation(const std::string_view translation_key) const;
+		std::string get_lua_translation(const std::string translation_key) const;
 		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = {0, 0}) const;
 
 		std::map<std::string, translation_entry>& available_translations();

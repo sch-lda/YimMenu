@@ -365,19 +365,31 @@ namespace big
 
 		for (auto& [key, value] : j.items())
 		{
-			m_translations_lua.insert({rage::joaat(key), value.get<std::string>()});
+			m_translations_lua.insert({value.get<std::string>(), value.get<std::string>()});
 		}
 	}
 
-	std::string_view translation_service::get_lua_translation(const std::string_view translation_key) const
+	std::string translation_service::get_lua_translation(const std::string translation_key) const
 	{
 		if (!g.lua.lua_translation_toggle)
 			return translation_key;
 
-		if (auto it = m_translations_lua.find(rage::joaat(translation_key)); it != m_translations_lua.end())
+		if (auto it = m_translations_lua.find(translation_key); it != m_translations_lua.end())
 			return it->second.c_str();
 
-		return translation_key;
+		std::string translation_key_p = translation_key;
+		for (auto& [key, value] : m_translations_lua)
+		{
+			size_t pos = translation_key_p.find(key);
+
+			while (pos != std::string::npos)
+			{
+				translation_key_p.replace(pos, key.length(), value);
+				pos = translation_key_p.find(key, pos + value.length());
+			}
+		}
+
+		return translation_key_p;
 	}
 
 }
