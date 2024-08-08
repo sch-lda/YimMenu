@@ -1,4 +1,5 @@
 #include "gui.hpp"
+#include "services/translation_service/translation_service.hpp"
 
 #include "../../gui.hpp"
 
@@ -140,14 +141,18 @@ namespace lua::gui
 
 	tab tab::add_tab(const std::string& name, sol::this_state state)
 	{
-		const auto sub_tab = tab(name, m_tab_hash, state);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+		const auto sub_tab          = tab(translated_name, m_tab_hash, state);
 
 		return sub_tab;
 	}
 
 	lua::gui::button* tab::add_button(const std::string& name, sol::protected_function callback, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::button>(name, callback);
+		LOG(VERBOSE) << "Adding button: " << name;
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+		LOG(VERBOSE) << "Translated name: " << translated_name;
+		auto element                = std::make_unique<lua::gui::button>(translated_name, callback);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -155,7 +160,8 @@ namespace lua::gui
 
 	lua::gui::text* tab::add_text(const std::string& name, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::text>(name);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+		auto element                = std::make_unique<lua::gui::text>(translated_name);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -163,7 +169,8 @@ namespace lua::gui
 
 	lua::gui::checkbox* tab::add_checkbox(const std::string& name, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::checkbox>(name);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+		auto element                = std::make_unique<lua::gui::checkbox>(translated_name);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -187,7 +194,9 @@ namespace lua::gui
 
 	lua::gui::input_int* tab::add_input_int(const std::string& name, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::input_int>(name);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+
+		auto element = std::make_unique<lua::gui::input_int>(translated_name);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -195,7 +204,9 @@ namespace lua::gui
 
 	lua::gui::input_float* tab::add_input_float(const std::string& name, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::input_float>(name);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+
+		auto element = std::make_unique<lua::gui::input_float>(translated_name);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -203,7 +214,9 @@ namespace lua::gui
 
 	lua::gui::input_string* tab::add_input_string(const std::string& name, sol::this_state state)
 	{
-		auto element = std::make_unique<lua::gui::input_string>(name);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
+
+		auto element = std::make_unique<lua::gui::input_string>(translated_name);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));
 		return el_ptr;
@@ -251,7 +264,10 @@ namespace lua::gui
 	// Shows a success to the user with the given title and message.
 	static void show_success(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service.push_success(title, message);
+		std::string translated_title   = big::g_translation_service.get_lua_translation(title).data();
+		std::string translated_message = big::g_translation_service.get_lua_translation(message).data();
+
+		big::g_notification_service.push_success(translated_title, translated_message);
 	}
 
 	// Lua API: Function
@@ -262,7 +278,10 @@ namespace lua::gui
 	// Shows a message to the user with the given title and message.
 	static void show_message(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service.push(title, message);
+		std::string translated_title   = big::g_translation_service.get_lua_translation(title).data();
+		std::string translated_message = big::g_translation_service.get_lua_translation(message).data();
+
+		big::g_notification_service.push(translated_title, translated_message);
 	}
 
 	// Lua API: Function
@@ -273,7 +292,10 @@ namespace lua::gui
 	// Shows a warning to the user with the given title and message.
 	static void show_warning(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service.push_warning(title, message);
+		std::string translated_title   = big::g_translation_service.get_lua_translation(title).data();
+		std::string translated_message = big::g_translation_service.get_lua_translation(message).data();
+
+		big::g_notification_service.push_warning(translated_title, translated_message);
 	}
 
 	// Lua API: Function
@@ -284,7 +306,10 @@ namespace lua::gui
 	// Shows an error to the user with the given title and message.
 	static void show_error(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service.push_error(title, message);
+		std::string translated_title   = big::g_translation_service.get_lua_translation(title).data();
+		std::string translated_message = big::g_translation_service.get_lua_translation(message).data();
+
+		big::g_notification_service.push_error(translated_title, translated_message);
 	}
 
 	// Lua API: Function

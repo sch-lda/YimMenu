@@ -20,6 +20,8 @@ namespace big
 	{
 		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
+		load_lua_translations();
+
 		bool loaded_remote_index = false;
 		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)
 		{
@@ -328,4 +330,27 @@ namespace big
 			});
 		}
 	}
+
+	void translation_service::load_lua_translations()
+	{
+		m_translations_lua.clear();
+
+		auto file = m_translation_directory->get_file("./lua_lang.json");
+		auto j    = nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+
+		for (auto& [key, value] : j.items())
+		{
+			m_translations_lua.insert({rage::joaat(key), value.get<std::string>()});
+			LOG(VERBOSE) << "Loaded lua translation: " << key << " -> " << value.get<std::string>();
+		}
+	}
+
+	std::string_view translation_service::get_lua_translation(const std::string_view translation_key) const
+	{
+		if (auto it = m_translations_lua.find(rage::joaat(translation_key)); it != m_translations_lua.end())
+			return it->second.c_str();
+
+		return translation_key;
+	}
+
 }

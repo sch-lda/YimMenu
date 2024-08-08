@@ -9,6 +9,7 @@
 namespace big
 {
 	using translation_map = std::unordered_map<rage::joaat_t, std::string>;
+	using translation_map_lua = std::unordered_map<rage::joaat_t, std::string>;
 
 	class translation_service
 	{
@@ -23,6 +24,7 @@ namespace big
 		void init();
 
 		std::string_view get_translation(const std::string_view translation_key) const;
+		std::string_view get_lua_translation(const std::string_view translation_key) const;
 		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = {0, 0}) const;
 
 		std::map<std::string, translation_entry>& available_translations();
@@ -37,6 +39,7 @@ namespace big
 
 	private:
 		void load_translations();
+		void load_lua_translations();
 		bool does_language_exist(const std::string_view language);
 		nlohmann::json load_translation(const std::string_view pack_id);
 
@@ -69,6 +72,7 @@ namespace big
 		remote_index m_remote_index;
 
 		translation_map m_translations;
+		translation_map_lua m_translations_lua;
 	};
 
 	inline auto g_translation_service = translation_service();
