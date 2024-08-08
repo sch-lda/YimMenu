@@ -386,14 +386,10 @@ namespace big
 		for (auto& [key, value] : sorted_m_translations_lua)
 		{
 			size_t pos = translation_key_p.find(key);
-			if (pos != std::string::npos)
+			while (pos != std::string::npos)
 			{
-				while (pos != std::string::npos)
-				{
-					translation_key_p.replace(pos, key.length(), value);
-					pos = translation_key_p.find(key, pos + value.length());
-				}
-				break;
+				translation_key_p.replace(pos, key.length(), value);
+				pos = translation_key_p.find(key, pos + value.length());
 			}
 		}
 
