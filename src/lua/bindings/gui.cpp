@@ -149,9 +149,7 @@ namespace lua::gui
 
 	lua::gui::button* tab::add_button(const std::string& name, sol::protected_function callback, sol::this_state state)
 	{
-		LOG(VERBOSE) << "Adding button: " << name;
 		std::string translated_name = big::g_translation_service.get_lua_translation(name).data();
-		LOG(VERBOSE) << "Translated name: " << translated_name;
 		auto element                = std::make_unique<lua::gui::button>(translated_name, callback);
 		auto el_ptr  = element.get();
 		add_element(state, m_tab_hash, std::move(element));

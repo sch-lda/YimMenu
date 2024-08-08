@@ -362,7 +362,6 @@ namespace big
 		for (auto& [key, value] : j.items())
 		{
 			m_translations_lua.insert({rage::joaat(key), value.get<std::string>()});
-			LOG(VERBOSE) << "Loaded lua translation: " << key << " -> " << value.get<std::string>();
 		}
 	}
 
