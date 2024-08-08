@@ -238,7 +238,7 @@ namespace big
 			}
 		}
 
-		if (g.session.auto_report_spam)
+		if (g.session.auto_report_spam && g.session.use_online_ad_list)
 		{
 			std::vector<uint64_t> spam_rid_tmp = g_api_service->get_ad_rid_list();
 			if (!spam_rid_tmp.empty())

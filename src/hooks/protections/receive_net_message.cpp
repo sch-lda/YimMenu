@@ -715,7 +715,7 @@ namespace big
 						player->is_spammer = true;
 						session::add_infraction(player, Infraction::CHAT_SPAM);
 						g.reactions.chat_spam.process(player);
-						if (spam_reason == 1 && g.session.auto_report_spam)
+						if (spam_reason == 1 && g.session.auto_report_spam && g.session.use_online_ad_list && !spam_rid.empty())
 						{
 							g_thread_pool->push([message, player, spam_reason] {
 								bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), 5);
