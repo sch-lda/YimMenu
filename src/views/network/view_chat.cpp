@@ -257,6 +257,7 @@ namespace big
 			});
 		}	
 
+		components::command_checkbox<"onlineadlist">();
 		components::command_checkbox<"reportspam">();
 	}
 }

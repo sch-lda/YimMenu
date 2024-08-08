@@ -133,6 +133,7 @@ namespace big
 	bool_command
 	    chat_translate("translatechat", "TRANSLATOR_TOGGLE", "TRANSLATOR_TOGGLE_DESC", g.session.chat_translator.enabled);
 	bool_command upl_spam("reportspam", "REPORT_SPAM", "REPORT_SPAM_DESC", g.session.auto_report_spam);
+	bool_command sync_ad_list("onlineadlist", "在线广告关键词黑名单", "从服务器下载广告机关键词黑名单,更新频率高于本地黑名单", g.session.use_online_ad_list);
 
 	void render_general_options()
 	{
