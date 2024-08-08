@@ -365,7 +365,8 @@ namespace big
 
 		for (auto& [key, value] : j.items())
 		{
-			m_translations_lua.insert({value.get<std::string>(), value.get<std::string>()});
+			m_translations_lua.insert({key, value.get<std::string>()});
+			
 		}
 	}
 
