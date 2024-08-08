@@ -107,9 +107,10 @@ namespace big
 	{
 		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
 		{
+
 			const auto path = item.path();
 			const auto stem = path.stem().string();
-			if (stem == "index" || item.path().extension() != ".json")
+			if (stem == "index" || stem == "lua_lang" || item.path().extension() != ".json")
 				continue;
 
 			if (!download_language_pack(stem))
