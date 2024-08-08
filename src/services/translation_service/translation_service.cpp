@@ -21,7 +21,8 @@ namespace big
 	{
 		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
-		load_lua_translations();
+		if (g.lua.lua_translation_toggle)
+			load_lua_translations();
 
 		bool loaded_remote_index = false;
 		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)
@@ -334,19 +335,22 @@ namespace big
 
 	void translation_service::load_lua_translations()
 	{
-		std::string url = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json";
-		const auto response = g_http_client.get(url, {}, {});
+		if (!g.lua.lua_translation_disable_update)
+		{
+			std::string url     = g.lua.lua_translation_endpoint;
+			const auto response = g_http_client.get(url, {}, {});
 
-		if (response.status_code != 200)
-		{
-			LOG(WARNING) << "lua translations download failed, trying to load from disk.";
-			LOG(WARNING) << "Lua translation download error:" << response.status_code;
-		}
-		else
-		{
-			static std::ofstream lua_lang_file(g_file_manager.get_project_file("./translations/lua_lang.json").get_path());
-			lua_lang_file << response.text;
-			lua_lang_file.close();
+			if (response.status_code != 200)
+			{
+				LOG(WARNING) << "lua translations download failed, trying to load from disk.";
+				LOG(WARNING) << "Lua translation download error:" << response.status_code;
+			}
+			else
+			{
+				static std::ofstream lua_lang_file(g_file_manager.get_project_file("./translations/lua_lang.json").get_path());
+				lua_lang_file << response.text;
+				lua_lang_file.close();
+			}
 		}
 
 		m_translations_lua.clear();
@@ -367,6 +371,9 @@ namespace big
 
 	std::string_view translation_service::get_lua_translation(const std::string_view translation_key) const
 	{
+		if (!g.lua.lua_translation_toggle)
+			return translation_key;
+
 		if (auto it = m_translations_lua.find(rage::joaat(translation_key)); it != m_translations_lua.end())
 			return it->second.c_str();
 
