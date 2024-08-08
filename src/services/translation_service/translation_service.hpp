@@ -74,6 +74,7 @@ namespace big
 
 		translation_map m_translations;
 		translation_map_lua m_translations_lua;
+		std::vector<std::pair<std::string, std::string>> sorted_m_translations_lua;
 	};
 
 	inline auto g_translation_service = translation_service();

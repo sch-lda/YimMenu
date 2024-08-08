@@ -367,8 +367,11 @@ namespace big
 		for (auto& [key, value] : j.items())
 		{
 			m_translations_lua.insert({key, value.get<std::string>()});
-			
 		}
+		sorted_m_translations_lua = std::vector<std::pair<std::string, std::string>>(m_translations_lua.begin(), m_translations_lua.end());
+		std::sort(sorted_m_translations_lua.begin(), sorted_m_translations_lua.end(), [](const auto& a, const auto& b) {
+			return a.first.length() > b.first.length();
+		});
 	}
 
 	std::string translation_service::get_lua_translation(const std::string translation_key) const
@@ -380,14 +383,17 @@ namespace big
 			return it->second.c_str();
 
 		std::string translation_key_p = translation_key;
-		for (auto& [key, value] : m_translations_lua)
+		for (auto& [key, value] : sorted_m_translations_lua)
 		{
 			size_t pos = translation_key_p.find(key);
-
-			while (pos != std::string::npos)
+			if (pos != std::string::npos)
 			{
-				translation_key_p.replace(pos, key.length(), value);
-				pos = translation_key_p.find(key, pos + value.length());
+				while (pos != std::string::npos)
+				{
+					translation_key_p.replace(pos, key.length(), value);
+					pos = translation_key_p.find(key, pos + value.length());
+				}
+				break;
 			}
 		}
 

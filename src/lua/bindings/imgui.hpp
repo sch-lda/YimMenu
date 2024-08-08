@@ -551,32 +551,45 @@ namespace lua::imgui
 	// Widgets: Text
 	inline void TextUnformatted(const std::string& text)
 	{
-		ImGui::TextUnformatted(text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::TextUnformatted(translated_name.c_str());
 	}
 	inline void Text(const std::string& text)
 	{
 		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
 		ImGui::TextUnformatted(translated_name.c_str());
 	} // TODO - make this proper call to ImGui::Text, allowing real formatting!
 	inline void TextColored(float colR, float colG, float colB, float colA, const std::string& text)
 	{
-		ImGui::TextColored({colR, colG, colB, colA}, "%s", text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::TextColored({colR, colG, colB, colA}, "%s", translated_name.c_str());
 	}
 	inline void TextDisabled(const std::string& text)
 	{
-		ImGui::TextDisabled("%s", text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::TextDisabled("%s", translated_name.c_str());
 	}
 	inline void TextWrapped(const std::string& text)
 	{
-		ImGui::TextWrapped("%s", text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::TextWrapped("%s", translated_name.c_str());
 	}
 	inline void LabelText(const std::string& label, const std::string& text)
 	{
-		ImGui::LabelText(label.c_str(), "%s", text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::LabelText(label.c_str(), "%s", translated_name.c_str());
 	}
 	inline void BulletText(const std::string& text)
 	{
-		ImGui::BulletText("%s", text.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(text);
+
+		ImGui::BulletText("%s", translated_name.c_str());
 	}
 
 	// Widgets: Main
@@ -612,8 +625,10 @@ namespace lua::imgui
 	}
 	inline std::tuple<bool, bool> Checkbox(const std::string& label, bool v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		bool value{v};
-		bool pressed = ImGui::Checkbox(label.c_str(), &value);
+		bool pressed = ImGui::Checkbox(translated_name.c_str(), &value);
 
 		return std::make_tuple(value, pressed);
 	}
@@ -623,11 +638,15 @@ namespace lua::imgui
 	}
 	inline bool RadioButton(const std::string& label, bool active)
 	{
-		return ImGui::RadioButton(label.c_str(), active);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::RadioButton(translated_name.c_str(), active);
 	}
 	inline std::tuple<int, bool> RadioButton(const std::string& label, int v, int vButton)
 	{
-		bool ret{ImGui::RadioButton(label.c_str(), &v, vButton)};
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool ret{ImGui::RadioButton(translated_name.c_str(), &v, vButton)};
 		return std::make_tuple(v, ret);
 	}
 	inline void ProgressBar(float fraction)
@@ -650,11 +669,15 @@ namespace lua::imgui
 	// Widgets: Combo Box
 	inline bool BeginCombo(const std::string& label, const std::string& previewValue)
 	{
-		return ImGui::BeginCombo(label.c_str(), previewValue.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginCombo(translated_name.c_str(), previewValue.c_str());
 	}
 	inline bool BeginCombo(const std::string& label, const std::string& previewValue, int flags)
 	{
-		return ImGui::BeginCombo(label.c_str(), previewValue.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginCombo(translated_name.c_str(), previewValue.c_str(), flags);
 	}
 	inline void EndCombo()
 	{
@@ -1219,25 +1242,33 @@ namespace lua::imgui
 	// Widgets: Sliders
 	inline std::tuple<float, bool> SliderFloat(const std::string& label, float v, float v_min, float v_max)
 	{
-		bool used = ImGui::SliderFloat(label.c_str(), &v, v_min, v_max);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderFloat(translated_name.c_str(), &v, v_min, v_max);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<float, bool> SliderFloat(const std::string& label, float v, float v_min, float v_max, const std::string& format)
 	{
-		bool used = ImGui::SliderFloat(label.c_str(), &v, v_min, v_max, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderFloat(translated_name.c_str(), &v, v_min, v_max, format.c_str());
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<float, bool> SliderFloat(const std::string& label, float v, float v_min, float v_max, const std::string& format, int flags)
 	{
-		bool used = ImGui::SliderFloat(label.c_str(), &v, v_min, v_max, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderFloat(translated_name.c_str(), &v, v_min, v_max, format.c_str(), flags);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat2(const std::string& label, const sol::table& v, float v_min, float v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::SliderFloat2(label.c_str(), value, v_min, v_max);
+		bool used      = ImGui::SliderFloat2(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1245,10 +1276,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat2(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::SliderFloat2(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used      = ImGui::SliderFloat2(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1256,10 +1289,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat2(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::SliderFloat2(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used      = ImGui::SliderFloat2(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1267,11 +1302,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat3(const std::string& label, const sol::table& v, float v_min, float v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::SliderFloat3(label.c_str(), value, v_min, v_max);
+		bool used      = ImGui::SliderFloat3(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[3]});
 
@@ -1279,11 +1316,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat3(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::SliderFloat3(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used      = ImGui::SliderFloat3(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[3]});
 
@@ -1291,11 +1330,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat3(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::SliderFloat3(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used      = ImGui::SliderFloat3(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[3]});
 
@@ -1303,12 +1344,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat4(const std::string& label, const sol::table& v, float v_min, float v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::SliderFloat4(label.c_str(), value, v_min, v_max);
+		bool used = ImGui::SliderFloat4(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1316,12 +1359,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat4(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::SliderFloat4(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used = ImGui::SliderFloat4(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1329,12 +1374,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> SliderFloat4(const std::string& label, const sol::table& v, float v_min, float v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::SliderFloat4(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used = ImGui::SliderFloat4(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1342,50 +1389,68 @@ namespace lua::imgui
 	}
 	inline std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad)
 	{
-		bool used = ImGui::SliderAngle(label.c_str(), &v_rad);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderAngle(translated_name.c_str(), &v_rad);
 		return std::make_tuple(v_rad, used);
 	}
 	inline std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad, float v_degrees_min)
 	{
-		bool used = ImGui::SliderAngle(label.c_str(), &v_rad, v_degrees_min);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderAngle(translated_name.c_str(), &v_rad, v_degrees_min);
 		return std::make_tuple(v_rad, used);
 	}
 	inline std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad, float v_degrees_min, float v_degrees_max)
 	{
-		bool used = ImGui::SliderAngle(label.c_str(), &v_rad, v_degrees_min, v_degrees_max);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderAngle(translated_name.c_str(), &v_rad, v_degrees_min, v_degrees_max);
 		return std::make_tuple(v_rad, used);
 	}
 	inline std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad, float v_degrees_min, float v_degrees_max, const std::string& format)
 	{
-		bool used = ImGui::SliderAngle(label.c_str(), &v_rad, v_degrees_min, v_degrees_max, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderAngle(translated_name.c_str(), &v_rad, v_degrees_min, v_degrees_max, format.c_str());
 		return std::make_tuple(v_rad, used);
 	}
 	inline std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad, float v_degrees_min, float v_degrees_max, const std::string& format, int flags)
 	{
-		bool used = ImGui::SliderAngle(label.c_str(), &v_rad, v_degrees_min, v_degrees_max, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderAngle(translated_name.c_str(), &v_rad, v_degrees_min, v_degrees_max, format.c_str(), flags);
 		return std::make_tuple(v_rad, used);
 	}
 	inline std::tuple<int, bool> SliderInt(const std::string& label, int v, int v_min, int v_max)
 	{
-		bool used = ImGui::SliderInt(label.c_str(), &v, v_min, v_max);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderInt(translated_name.c_str(), &v, v_min, v_max);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<int, bool> SliderInt(const std::string& label, int v, int v_min, int v_max, const std::string& format)
 	{
-		bool used = ImGui::SliderInt(label.c_str(), &v, v_min, v_max, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderInt(translated_name.c_str(), &v, v_min, v_max, format.c_str());
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<int, bool> SliderInt(const std::string& label, int v, int v_min, int v_max, const std::string& format, int flags)
 	{
-		bool used = ImGui::SliderInt(label.c_str(), &v, v_min, v_max, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::SliderInt(translated_name.c_str(), &v, v_min, v_max, format.c_str(), flags);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt2(const std::string& label, const sol::table& v, int v_min, int v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[2] = {static_cast<int>(v1), static_cast<int>(v2)};
-		bool used    = ImGui::SliderInt2(label.c_str(), value, v_min, v_max);
+		bool used    = ImGui::SliderInt2(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t int2 = sol::as_table(std::vector<int>{value[0], value[1]});
 
@@ -1393,10 +1458,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt2(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[2] = {static_cast<int>(v1), static_cast<int>(v2)};
-		bool used    = ImGui::SliderInt2(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used    = ImGui::SliderInt2(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t int2 = sol::as_table(std::vector<int>{value[0], value[1]});
 
@@ -1404,10 +1471,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt2(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[2] = {static_cast<int>(v1), static_cast<int>(v2)};
-		bool used    = ImGui::SliderInt2(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used    = ImGui::SliderInt2(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t int2 = sol::as_table(std::vector<int>{value[0], value[1]});
 
@@ -1415,11 +1484,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt3(const std::string& label, const sol::table& v, int v_min, int v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[3] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3)};
-		bool used    = ImGui::SliderInt3(label.c_str(), value, v_min, v_max);
+		bool used    = ImGui::SliderInt3(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t int3 = sol::as_table(std::vector<int>{value[0], value[1], value[2]});
 
@@ -1427,11 +1498,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt3(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[3] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3)};
-		bool used    = ImGui::SliderInt3(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used    = ImGui::SliderInt3(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t int3 = sol::as_table(std::vector<int>{value[0], value[1], value[2]});
 
@@ -1439,11 +1512,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt3(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[3] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3)};
-		bool used    = ImGui::SliderInt3(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used    = ImGui::SliderInt3(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t int3 = sol::as_table(std::vector<int>{value[0], value[1], value[2]});
 
@@ -1451,12 +1526,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt4(const std::string& label, const sol::table& v, int v_min, int v_max)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[4] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4)};
-		bool used    = ImGui::SliderInt4(label.c_str(), value, v_min, v_max);
+		bool used    = ImGui::SliderInt4(translated_name.c_str(), value, v_min, v_max);
 
 		sol::as_table_t int4 = sol::as_table(std::vector<int>{value[0], value[1], value[2], value[3]});
 
@@ -1464,12 +1541,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt4(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[4] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4)};
-		bool used    = ImGui::SliderInt4(label.c_str(), value, v_min, v_max, format.c_str());
+		bool used    = ImGui::SliderInt4(translated_name.c_str(), value, v_min, v_max, format.c_str());
 
 		sol::as_table_t int4 = sol::as_table(std::vector<int>{value[0], value[1], value[2], value[3]});
 
@@ -1477,12 +1556,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> SliderInt4(const std::string& label, const sol::table& v, int v_min, int v_max, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[4] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4)};
-		bool used    = ImGui::SliderInt4(label.c_str(), value, v_min, v_max, format.c_str(), flags);
+		bool used    = ImGui::SliderInt4(translated_name.c_str(), value, v_min, v_max, format.c_str(), flags);
 
 		sol::as_table_t int4 = sol::as_table(std::vector<int>{value[0], value[1], value[2], value[3]});
 
@@ -1496,32 +1577,44 @@ namespace lua::imgui
 	}
 	inline std::tuple<float, bool> VSliderFloat(const std::string& label, float sizeX, float sizeY, float v, float v_min, float v_max)
 	{
-		bool used = ImGui::VSliderFloat(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderFloat(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<float, bool> VSliderFloat(const std::string& label, float sizeX, float sizeY, float v, float v_min, float v_max, const std::string& format)
 	{
-		bool used = ImGui::VSliderFloat(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderFloat(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str());
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<float, bool> VSliderFloat(const std::string& label, float sizeX, float sizeY, float v, float v_min, float v_max, const std::string& format, int flags)
 	{
-		bool used = ImGui::VSliderFloat(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderFloat(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str(), flags);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<int, bool> VSliderInt(const std::string& label, float sizeX, float sizeY, int v, int v_min, int v_max)
 	{
-		bool used = ImGui::VSliderInt(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderInt(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max);
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<int, bool> VSliderInt(const std::string& label, float sizeX, float sizeY, int v, int v_min, int v_max, const std::string& format)
 	{
-		bool used = ImGui::VSliderInt(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderInt(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str());
 		return std::make_tuple(v, used);
 	}
 	inline std::tuple<int, bool> VSliderInt(const std::string& label, float sizeX, float sizeY, int v, int v_min, int v_max, const std::string& format, int flags)
 	{
-		bool used = ImGui::VSliderInt(label.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool used = ImGui::VSliderInt(translated_name.c_str(), {sizeX, sizeY}, &v, v_min, v_max, format.c_str(), flags);
 		return std::make_tuple(v, used);
 	}
 	inline void VSliderScalar()
@@ -1531,77 +1624,103 @@ namespace lua::imgui
 	// Widgets: Input with Keyboard
 	inline std::tuple<std::string, bool> InputText(const std::string& label, std::string text, unsigned int buf_size)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputText(label.c_str(), text.data(), buf_size);
+		bool selected = ImGui::InputText(translated_name.c_str(), text.data(), buf_size);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputText(const std::string& label, std::string text, unsigned int buf_size, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputText(label.c_str(), text.data(), buf_size, flags);
+		bool selected = ImGui::InputText(translated_name.c_str(), text.data(), buf_size, flags);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputTextMultiline(const std::string& label, std::string text, unsigned int buf_size)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputTextMultiline(label.c_str(), text.data(), buf_size);
+		bool selected = ImGui::InputTextMultiline(translated_name.c_str(), text.data(), buf_size);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputTextMultiline(const std::string& label, std::string text, unsigned int buf_size, float sizeX, float sizeY)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputTextMultiline(label.c_str(), text.data(), buf_size, {sizeX, sizeY});
+		bool selected = ImGui::InputTextMultiline(translated_name.c_str(), text.data(), buf_size, {sizeX, sizeY});
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputTextMultiline(const std::string& label, std::string text, unsigned int buf_size, float sizeX, float sizeY, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputTextMultiline(label.c_str(), text.data(), buf_size, {sizeX, sizeY}, flags);
+		bool selected = ImGui::InputTextMultiline(translated_name.c_str(), text.data(), buf_size, {sizeX, sizeY}, flags);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputTextWithHint(const std::string& label, const std::string& hint, std::string text, unsigned int buf_size)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputTextWithHint(label.c_str(), hint.c_str(), text.data(), buf_size);
+		bool selected = ImGui::InputTextWithHint(translated_name.c_str(), hint.c_str(), text.data(), buf_size);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<std::string, bool> InputTextWithHint(const std::string& label, const std::string& hint, std::string text, unsigned int buf_size, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		text.resize(buf_size);
-		bool selected = ImGui::InputTextWithHint(label.c_str(), hint.c_str(), text.data(), buf_size, flags);
+		bool selected = ImGui::InputTextWithHint(translated_name.c_str(), hint.c_str(), text.data(), buf_size, flags);
 		return std::make_tuple(text.c_str(), selected);
 	}
 	inline std::tuple<float, bool> InputFloat(const std::string& label, float v)
 	{
-		bool selected = ImGui::InputFloat(label.c_str(), &v);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputFloat(translated_name.c_str(), &v);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<float, bool> InputFloat(const std::string& label, float v, float step)
 	{
-		bool selected = ImGui::InputFloat(label.c_str(), &v, step);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputFloat(translated_name.c_str(), &v, step);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<float, bool> InputFloat(const std::string& label, float v, float step, float step_fast)
 	{
-		bool selected = ImGui::InputFloat(label.c_str(), &v, step, step_fast);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputFloat(translated_name.c_str(), &v, step, step_fast);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<float, bool> InputFloat(const std::string& label, float v, float step, float step_fast, const std::string& format)
 	{
-		bool selected = ImGui::InputFloat(label.c_str(), &v, step, step_fast, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputFloat(translated_name.c_str(), &v, step, step_fast, format.c_str());
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<float, bool> InputFloat(const std::string& label, float v, float step, float step_fast, const std::string& format, int flags)
 	{
-		bool selected = ImGui::InputFloat(label.c_str(), &v, step, step_fast, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputFloat(translated_name.c_str(), &v, step, step_fast, format.c_str(), flags);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat2(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::InputFloat2(label.c_str(), value);
+		bool used      = ImGui::InputFloat2(translated_name.c_str(), value);
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1609,10 +1728,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat2(const std::string& label, const sol::table& v, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::InputFloat2(label.c_str(), value, format.c_str());
+		bool used      = ImGui::InputFloat2(translated_name.c_str(), value, format.c_str());
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1620,10 +1741,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat2(const std::string& label, const sol::table& v, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[2] = {static_cast<float>(v1), static_cast<float>(v2)};
-		bool used      = ImGui::InputFloat2(label.c_str(), value, format.c_str(), flags);
+		bool used      = ImGui::InputFloat2(translated_name.c_str(), value, format.c_str(), flags);
 
 		sol::as_table_t float2 = sol::as_table(std::vector<float>{value[0], value[1]});
 
@@ -1631,11 +1754,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat3(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::InputFloat3(label.c_str(), value);
+		bool used      = ImGui::InputFloat3(translated_name.c_str(), value);
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[2]});
 
@@ -1643,11 +1768,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat3(const std::string& label, const sol::table& v, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::InputFloat3(label.c_str(), value, format.c_str());
+		bool used      = ImGui::InputFloat3(translated_name.c_str(), value, format.c_str());
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[2]});
 
@@ -1655,11 +1782,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat3(const std::string& label, const sol::table& v, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[3] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3)};
-		bool used      = ImGui::InputFloat3(label.c_str(), value, format.c_str(), flags);
+		bool used      = ImGui::InputFloat3(translated_name.c_str(), value, format.c_str(), flags);
 
 		sol::as_table_t float3 = sol::as_table(std::vector<float>{value[0], value[1], value[2]});
 
@@ -1667,12 +1796,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat4(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::InputFloat4(label.c_str(), value);
+		bool used = ImGui::InputFloat4(translated_name.c_str(), value);
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1680,12 +1811,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat4(const std::string& label, const sol::table& v, const std::string& format)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::InputFloat4(label.c_str(), value, format.c_str());
+		bool used = ImGui::InputFloat4(translated_name.c_str(), value, format.c_str());
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1693,12 +1826,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<float>>, bool> InputFloat4(const std::string& label, const sol::table& v, const std::string& format, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		float value[4] = {static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4)};
-		bool used = ImGui::InputFloat4(label.c_str(), value, format.c_str(), flags);
+		bool used = ImGui::InputFloat4(translated_name.c_str(), value, format.c_str(), flags);
 
 		sol::as_table_t float4 = sol::as_table(std::vector<float>{value[0], value[1], value[2], value[3]});
 
@@ -1706,30 +1841,40 @@ namespace lua::imgui
 	}
 	inline std::tuple<int, bool> InputInt(const std::string& label, int v)
 	{
-		bool selected = ImGui::InputInt(label.c_str(), &v);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputInt(translated_name.c_str(), &v);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<int, bool> InputInt(const std::string& label, int v, int step)
 	{
-		bool selected = ImGui::InputInt(label.c_str(), &v, step);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputInt(translated_name.c_str(), &v, step);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<int, bool> InputInt(const std::string& label, int v, int step, int step_fast)
 	{
-		bool selected = ImGui::InputInt(label.c_str(), &v, step, step_fast);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputInt(translated_name.c_str(), &v, step, step_fast);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<int, bool> InputInt(const std::string& label, int v, int step, int step_fast, int flags)
 	{
-		bool selected = ImGui::InputInt(label.c_str(), &v, step, step_fast, flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputInt(translated_name.c_str(), &v, step, step_fast, flags);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt2(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[2] = {static_cast<int>(v1), static_cast<int>(v2)};
-		bool used    = ImGui::InputInt2(label.c_str(), value);
+		bool used    = ImGui::InputInt2(translated_name.c_str(), value);
 
 		sol::as_table_t int2 = sol::as_table(std::vector<int>{value[0], value[1]});
 
@@ -1737,10 +1882,12 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt2(const std::string& label, const sol::table& v, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[2] = {static_cast<int>(v1), static_cast<int>(v2)};
-		bool used    = ImGui::InputInt2(label.c_str(), value, flags);
+		bool used    = ImGui::InputInt2(translated_name.c_str(), value, flags);
 
 		sol::as_table_t int2 = sol::as_table(std::vector<int>{value[0], value[1]});
 
@@ -1748,11 +1895,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt3(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[3] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3)};
-		bool used    = ImGui::InputInt3(label.c_str(), value);
+		bool used    = ImGui::InputInt3(translated_name.c_str(), value);
 
 		sol::as_table_t int3 = sol::as_table(std::vector<int>{value[0], value[1], value[2]});
 
@@ -1760,11 +1909,13 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt3(const std::string& label, const sol::table& v, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[3] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3)};
-		bool used    = ImGui::InputInt3(label.c_str(), value, flags);
+		bool used    = ImGui::InputInt3(translated_name.c_str(), value, flags);
 
 		sol::as_table_t int3 = sol::as_table(std::vector<int>{value[0], value[1], value[2]});
 
@@ -1772,12 +1923,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt4(const std::string& label, const sol::table& v)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[4] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4)};
-		bool used    = ImGui::InputInt4(label.c_str(), value);
+		bool used    = ImGui::InputInt4(translated_name.c_str(), value);
 
 		sol::as_table_t int4 = sol::as_table(std::vector<int>{value[0], value[1], value[2], value[3]});
 
@@ -1785,12 +1938,14 @@ namespace lua::imgui
 	}
 	inline std::tuple<sol::as_table_t<std::vector<int>>, bool> InputInt4(const std::string& label, const sol::table& v, int flags)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		const lua_Number v1{v[1].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v2{v[2].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v3{v[3].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))},
 		    v4{v[4].get<std::optional<lua_Number>>().value_or(static_cast<lua_Number>(0))};
 		int value[4] = {static_cast<int>(v1), static_cast<int>(v2), static_cast<int>(v3), static_cast<int>(v4)};
-		bool used    = ImGui::InputInt4(label.c_str(), value, flags);
+		bool used    = ImGui::InputInt4(translated_name.c_str(), value, flags);
 
 		sol::as_table_t int4 = sol::as_table(std::vector<int>{value[0], value[1], value[2], value[3]});
 
@@ -1798,27 +1953,37 @@ namespace lua::imgui
 	}
 	inline std::tuple<double, bool> InputDouble(const std::string& label, double v)
 	{
-		bool selected = ImGui::InputDouble(label.c_str(), &v);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputDouble(translated_name.c_str(), &v);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<double, bool> InputDouble(const std::string& label, double v, double step)
 	{
-		bool selected = ImGui::InputDouble(label.c_str(), &v, step);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputDouble(translated_name.c_str(), &v, step);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<double, bool> InputDouble(const std::string& label, double v, double step, double step_fast)
 	{
-		bool selected = ImGui::InputDouble(label.c_str(), &v, step, step_fast);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputDouble(translated_name.c_str(), &v, step, step_fast);
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<double, bool> InputDouble(const std::string& label, double v, double step, double step_fast, const std::string& format)
 	{
-		bool selected = ImGui::InputDouble(label.c_str(), &v, step, step_fast, format.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputDouble(translated_name.c_str(), &v, step, step_fast, format.c_str());
 		return std::make_tuple(v, selected);
 	}
 	inline std::tuple<double, bool> InputDouble(const std::string& label, double v, double step, double step_fast, const std::string& format, int flags)
 	{
-		bool selected = ImGui::InputDouble(label.c_str(), &v, step, step_fast, format.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool selected = ImGui::InputDouble(translated_name.c_str(), &v, step, step_fast, format.c_str(), flags);
 		return std::make_tuple(v, selected);
 	}
 	inline void InputScalar()
@@ -1970,7 +2135,9 @@ namespace lua::imgui
 	}
 	inline bool TreeNode(const std::string& label, const std::string& fmt)
 	{
-		return ImGui::TreeNode(label.c_str(), "%s", fmt.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::TreeNode(translated_name.c_str(), "%s", fmt.c_str());
 	}
 	/* TODO: TreeNodeV(...) (2) ==> UNSUPPORTED */
 	inline bool TreeNodeEx(const std::string& label)
@@ -2059,6 +2226,8 @@ namespace lua::imgui
 	// Widgets: List Boxes
 	inline std::tuple<int, bool> ListBox(const std::string& label, int current_item, const sol::table& items, int items_count)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		std::vector<std::string> strings;
 		for (int i{1}; i <= items_count; i++)
 		{
@@ -2070,11 +2239,13 @@ namespace lua::imgui
 		for (auto& string : strings)
 			cstrings.emplace_back(string.c_str());
 
-		bool clicked = ImGui::ListBox(label.c_str(), &current_item, cstrings.data(), items_count);
+		bool clicked = ImGui::ListBox(translated_name.c_str(), &current_item, cstrings.data(), items_count);
 		return std::make_tuple(current_item, clicked);
 	}
 	inline std::tuple<int, bool> ListBox(const std::string& label, int current_item, const sol::table& items, int items_count, int height_in_items)
 	{
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
 		std::vector<std::string> strings;
 		for (int i{1}; i <= items_count; i++)
 		{
@@ -2086,16 +2257,20 @@ namespace lua::imgui
 		for (auto& string : strings)
 			cstrings.emplace_back(string.c_str());
 
-		bool clicked = ImGui::ListBox(label.c_str(), &current_item, cstrings.data(), items_count, height_in_items);
+		bool clicked = ImGui::ListBox(translated_name.c_str(), &current_item, cstrings.data(), items_count, height_in_items);
 		return std::make_tuple(current_item, clicked);
 	}
 	inline bool BeginListBox(const std::string& label)
 	{
-		return ImGui::BeginListBox(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginListBox(translated_name.c_str());
 	}
 	inline bool BeginListBox(const std::string& label, float sizeX, float sizeY)
 	{
-		return ImGui::BeginListBox(label.c_str(), {sizeX, sizeY});
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginListBox(translated_name.c_str(), {sizeX, sizeY});
 	}
 	inline void EndListBox()
 	{
@@ -2146,11 +2321,15 @@ namespace lua::imgui
 	}
 	inline bool BeginMenu(const std::string& label)
 	{
-		return ImGui::BeginMenu(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginMenu(translated_name.c_str());
 	}
 	inline bool BeginMenu(const std::string& label, bool enabled)
 	{
-		return ImGui::BeginMenu(label.c_str(), enabled);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::BeginMenu(translated_name.c_str(), enabled);
 	}
 	inline void EndMenu()
 	{
@@ -2158,20 +2337,28 @@ namespace lua::imgui
 	}
 	inline bool MenuItem(const std::string& label)
 	{
-		return ImGui::MenuItem(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::MenuItem(translated_name.c_str());
 	}
 	inline bool MenuItem(const std::string& label, const std::string& shortcut)
 	{
-		return ImGui::MenuItem(label.c_str(), shortcut.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::MenuItem(translated_name.c_str(), shortcut.c_str());
 	}
 	inline std::tuple<bool, bool> MenuItem(const std::string& label, const std::string& shortcut, bool selected)
 	{
-		bool activated = ImGui::MenuItem(label.c_str(), shortcut.c_str(), &selected);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool activated = ImGui::MenuItem(translated_name.c_str(), shortcut.c_str(), &selected);
 		return std::make_tuple(selected, activated);
 	}
 	inline std::tuple<bool, bool> MenuItem(const std::string& label, const std::string& shortcut, bool selected, bool enabled)
 	{
-		bool activated = ImGui::MenuItem(label.c_str(), shortcut.c_str(), &selected, enabled);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool activated = ImGui::MenuItem(translated_name.c_str(), shortcut.c_str(), &selected, enabled);
 		return std::make_tuple(selected, activated);
 	}
 
