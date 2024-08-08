@@ -37,9 +37,10 @@ namespace big
 		 */
 		void update_n_reload_language_packs();
 
+		void load_lua_translations();
+
 	private:
 		void load_translations();
-		void load_lua_translations();
 		bool does_language_exist(const std::string_view language);
 		nlohmann::json load_translation(const std::string_view pack_id);
 

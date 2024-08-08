@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "lua/lua_manager.hpp"
 #include "views/view.hpp"
+#include "thread_pool.hpp"
 
 namespace big
 {
@@ -119,7 +120,14 @@ namespace big
 			components::input_text_with_hint("语言文件路径",
 			    "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json",
 			    g.lua.lua_translation_endpoint);
-			
+			if (components::button("重新加载语言文件"))
+			{
+				g_thread_pool->push([] {
+					g_translation_service.load_lua_translations();
+
+					g_notification_service.push_success("LANGUAGE"_T.data(), "已尝试重新获取Lua语言文件");
+				});
+			}
 		}
 	}
 }
