@@ -7,6 +7,7 @@
 #include "pointers.hpp"
 #include "renderer/renderer.hpp"
 #include "thread_pool.hpp"
+#include "services/api/api_service.hpp"
 
 namespace big
 {
@@ -333,15 +334,30 @@ namespace big
 
 	void translation_service::load_lua_translations()
 	{
+		std::string url = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json";
+		const auto response = g_http_client.get(url, {}, {});
+
+		if (response.status_code != 200)
+		{
+			LOG(WARNING) << "lua translations download failed, trying to load from disk.";
+			LOG(WARNING) << "Lua translation download error:" << response.status_code;
+		}
+		else
+		{
+			static std::ofstream lua_lang_file(g_file_manager.get_project_file("./translations/lua_lang.json").get_path());
+			lua_lang_file << response.text;
+			lua_lang_file.close();
+		}
+
 		m_translations_lua.clear();
 
 		auto file = m_translation_directory->get_file("./lua_lang.json");
 		if (!file.exists())
 		{
-			LOG(INFO) << "No lua translations found.";
+			LOG(WARNING) << "No lua translations found on disk.";
 			return;
 		}
-		auto j    = nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+		auto j = nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
 
 		for (auto& [key, value] : j.items())
 		{
