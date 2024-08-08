@@ -336,6 +336,11 @@ namespace big
 		m_translations_lua.clear();
 
 		auto file = m_translation_directory->get_file("./lua_lang.json");
+		if (!file.exists())
+		{
+			LOG(INFO) << "No lua translations found.";
+			return;
+		}
 		auto j    = nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
 
 		for (auto& [key, value] : j.items())
