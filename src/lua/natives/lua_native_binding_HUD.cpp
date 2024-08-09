@@ -471,7 +471,13 @@ namespace lua::native
 
 	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(sol::stack_object text)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.is<const char*>() ? text.as<const char*>() : nullptr);
+		std::string translated_name = big::g_translation_service.get_lua_translation(text.as<std::string>());
+
+		if (translated_name != text.as<std::string>())
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(translated_name.c_str());
+		else
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.is<const char*>() ? text.as<const char*>() : nullptr);
+
 	}
 
 	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_TIME(int timestamp, int flags)
