@@ -696,7 +696,8 @@ namespace lua::imgui
 		for (int i{1}; i <= itemsCount; i++)
 		{
 			const auto& stringItem = items.get<sol::optional<std::string>>(i);
-			cstrings.emplace_back(strings.emplace_back(std::move(stringItem.value_or("Missing"))).c_str());
+			std::string translated_item = big::g_translation_service.get_lua_translation(stringItem.value_or("Missing"));
+			cstrings.emplace_back(strings.emplace_back(std::move(translated_item)).c_str());
 		}
 
 		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, cstrings.data(), itemsCount);
@@ -713,7 +714,8 @@ namespace lua::imgui
 		for (int i{1}; i <= itemsCount; i++)
 		{
 			const auto& stringItem = items.get<sol::optional<std::string>>(i);
-			cstrings.emplace_back(strings.emplace_back(std::move(stringItem.value_or("Missing"))).c_str());
+			std::string translated_item = big::g_translation_service.get_lua_translation(stringItem.value_or("Missing"));
+			cstrings.emplace_back(strings.emplace_back(std::move(translated_item)).c_str());
 		}
 
 		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, cstrings.data(), itemsCount, popupMaxHeightInItems);
@@ -722,15 +724,15 @@ namespace lua::imgui
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const std::string& itemsSeparatedByZeros)
 	{
 		std::string translated_name = big::g_translation_service.get_lua_translation(label);
-
-		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, itemsSeparatedByZeros.c_str());
+		std::string translated_itemsSeparatedByZeros = big::g_translation_service.get_lua_translation(itemsSeparatedByZeros);
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, translated_itemsSeparatedByZeros.c_str());
 		return std::make_tuple(currentItem, clicked);
 	}
 	inline std::tuple<int, bool> Combo(const std::string& label, int currentItem, const std::string& itemsSeparatedByZeros, int popupMaxHeightInItems)
 	{
 		std::string translated_name = big::g_translation_service.get_lua_translation(label);
-
-		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, itemsSeparatedByZeros.c_str(), popupMaxHeightInItems);
+		std::string translated_itemsSeparatedByZeros = big::g_translation_service.get_lua_translation(itemsSeparatedByZeros);
+		bool clicked = ImGui::Combo(translated_name.c_str(), &currentItem, translated_itemsSeparatedByZeros.c_str(), popupMaxHeightInItems);
 		return std::make_tuple(currentItem, clicked);
 	}
 	// TODO: 3rd Combo from ImGui not Supported
