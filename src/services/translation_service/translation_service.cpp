@@ -372,6 +372,10 @@ namespace big
 			{
 				key_str.replace(pos, 2, "\n");
 			}
+			while ((pos = key_str.find("\\10")) != std::string::npos)
+			{
+				key_str.replace(pos, 2, "\10");
+			}
 			m_translations_lua.insert({key_str, value.get<std::string>()});
 		}
 		sorted_m_translations_lua = std::vector<std::pair<std::string, std::string>>(m_translations_lua.begin(), m_translations_lua.end());
