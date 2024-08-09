@@ -670,14 +670,16 @@ namespace lua::imgui
 	inline bool BeginCombo(const std::string& label, const std::string& previewValue)
 	{
 		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+		std::string translated_previewValue = big::g_translation_service.get_lua_translation(previewValue);
 
-		return ImGui::BeginCombo(translated_name.c_str(), previewValue.c_str());
+		return ImGui::BeginCombo(translated_name.c_str(), translated_previewValue.c_str());
 	}
 	inline bool BeginCombo(const std::string& label, const std::string& previewValue, int flags)
 	{
 		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+		std::string translated_previewValue = big::g_translation_service.get_lua_translation(previewValue);
 
-		return ImGui::BeginCombo(translated_name.c_str(), previewValue.c_str(), flags);
+		return ImGui::BeginCombo(translated_name.c_str(), translated_previewValue.c_str(), flags);
 	}
 	inline void EndCombo()
 	{
@@ -2168,20 +2170,28 @@ namespace lua::imgui
 	}
 	inline bool CollapsingHeader(const std::string& label)
 	{
-		return ImGui::CollapsingHeader(label.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::CollapsingHeader(translated_name.c_str());
 	}
 	inline bool CollapsingHeader(const std::string& label, int flags)
 	{
-		return ImGui::CollapsingHeader(label.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		return ImGui::CollapsingHeader(translated_name.c_str(), flags);
 	}
 	inline std::tuple<bool, bool> CollapsingHeader(const std::string& label, bool open)
 	{
-		bool notCollapsed = ImGui::CollapsingHeader(label.c_str(), &open);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool notCollapsed = ImGui::CollapsingHeader(translated_name.c_str(), &open);
 		return std::make_tuple(open, notCollapsed);
 	}
 	inline std::tuple<bool, bool> CollapsingHeader(const std::string& label, bool open, int flags)
 	{
-		bool notCollapsed = ImGui::CollapsingHeader(label.c_str(), &open, flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(label);
+
+		bool notCollapsed = ImGui::CollapsingHeader(translated_name.c_str(), &open, flags);
 		return std::make_tuple(open, notCollapsed);
 	}
 	inline void SetNextItemOpen(bool is_open)

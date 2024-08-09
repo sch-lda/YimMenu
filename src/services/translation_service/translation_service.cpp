@@ -366,7 +366,13 @@ namespace big
 
 		for (auto& [key, value] : j.items())
 		{
-			m_translations_lua.insert({key, value.get<std::string>()});
+			std::string key_str = key; 
+			size_t pos;
+			while ((pos = key_str.find("\\n")) != std::string::npos)
+			{
+				key_str.replace(pos, 2, "\n");
+			}
+			m_translations_lua.insert({key_str, value.get<std::string>()});
 		}
 		sorted_m_translations_lua = std::vector<std::pair<std::string, std::string>>(m_translations_lua.begin(), m_translations_lua.end());
 		std::sort(sorted_m_translations_lua.begin(), sorted_m_translations_lua.end(), [](const auto& a, const auto& b) {
