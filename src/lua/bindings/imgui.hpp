@@ -2392,27 +2392,39 @@ namespace lua::imgui
 	// Popups, Modals
 	inline bool BeginPopup(const std::string& str_id)
 	{
-		return ImGui::BeginPopup(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopup(translated_name.c_str());
 	}
 	inline bool BeginPopup(const std::string& str_id, int flags)
 	{
-		return ImGui::BeginPopup(str_id.c_str(), flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopup(translated_name.c_str(), flags);
 	}
 	inline bool BeginPopupModal(const std::string& name)
 	{
-		return ImGui::BeginPopupModal(name.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(name);
+
+		return ImGui::BeginPopupModal(translated_name.c_str());
 	}
 	inline bool BeginPopupModal(const std::string& name, int flags)
 	{
-		return ImGui::BeginPopupModal(name.c_str(), nullptr, flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name);
+
+		return ImGui::BeginPopupModal(translated_name.c_str(), nullptr, flags);
 	}
 	inline bool BeginPopupModal(const std::string& name, bool open)
 	{
-		return ImGui::BeginPopupModal(name.c_str(), &open);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name);
+
+		return ImGui::BeginPopupModal(translated_name.c_str(), &open);
 	}
 	inline bool BeginPopupModal(const std::string& name, bool open, int flags)
 	{
-		return ImGui::BeginPopupModal(name.c_str(), &open, flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(name);
+
+		return ImGui::BeginPopupModal(translated_name.c_str(), &open, flags);
 	}
 	inline void EndPopup()
 	{
@@ -2420,11 +2432,15 @@ namespace lua::imgui
 	}
 	inline void OpenPopup(const std::string& str_id)
 	{
-		ImGui::OpenPopup(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		ImGui::OpenPopup(translated_name.c_str());
 	}
 	inline void OpenPopup(const std::string& str_id, int popup_flags)
 	{
-		ImGui::OpenPopup(str_id.c_str(), popup_flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		ImGui::OpenPopup(translated_name.c_str(), popup_flags);
 	}
 	inline void CloseCurrentPopup()
 	{
@@ -2436,11 +2452,15 @@ namespace lua::imgui
 	}
 	inline bool BeginPopupContextItem(const std::string& str_id)
 	{
-		return ImGui::BeginPopupContextItem(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextItem(translated_name.c_str());
 	}
 	inline bool BeginPopupContextItem(const std::string& str_id, int popup_flags)
 	{
-		return ImGui::BeginPopupContextItem(str_id.c_str(), popup_flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextItem(translated_name.c_str(), popup_flags);
 	}
 	inline bool BeginPopupContextWindow()
 	{
@@ -2448,11 +2468,15 @@ namespace lua::imgui
 	}
 	inline bool BeginPopupContextWindow(const std::string& str_id)
 	{
-		return ImGui::BeginPopupContextWindow(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextWindow(translated_name.c_str());
 	}
 	inline bool BeginPopupContextWindow(const std::string& str_id, int popup_flags)
 	{
-		return ImGui::BeginPopupContextWindow(str_id.c_str(), popup_flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextWindow(translated_name.c_str(), popup_flags);
 	}
 	inline bool BeginPopupContextVoid()
 	{
@@ -2460,19 +2484,27 @@ namespace lua::imgui
 	}
 	inline bool BeginPopupContextVoid(const std::string& str_id)
 	{
-		return ImGui::BeginPopupContextVoid(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextVoid(translated_name.c_str());
 	}
 	inline bool BeginPopupContextVoid(const std::string& str_id, int popup_flags)
 	{
-		return ImGui::BeginPopupContextVoid(str_id.c_str(), popup_flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::BeginPopupContextVoid(translated_name.c_str(), popup_flags);
 	}
 	inline bool IsPopupOpen(const std::string& str_id)
 	{
-		return ImGui::IsPopupOpen(str_id.c_str());
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::IsPopupOpen(translated_name.c_str());
 	}
 	inline bool IsPopupOpen(const std::string& str_id, int popup_flags)
 	{
-		return ImGui::IsPopupOpen(str_id.c_str(), popup_flags);
+		std::string translated_name = big::g_translation_service.get_lua_translation(str_id);
+
+		return ImGui::IsPopupOpen(translated_name.c_str(), popup_flags);
 	}
 
 	// Tables
