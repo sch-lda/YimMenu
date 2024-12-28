@@ -707,21 +707,53 @@ namespace big
 			if (player->is_spammer)
 				return true;
 
-			if (auto spam_reason = chat::is_text_spam(message, player))
+			auto spam_reason = chat::is_text_spam(message, player);
+
+			if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
+			{
+				for (auto rid : spam_rid)
+				{
+					if (player->get_rockstar_id() == rid)
+					{
+						if (g.reactions.chat_spam.log)
+							LOG(INFO) << "Known AD rid: " << player->get_name() << " (" << player->get_rockstar_id() << ")";
+						player->is_spammer = true;
+						session::add_infraction(player, Infraction::CHAT_SPAM);
+						g.reactions.chat_spam.process(player);
+						if (spam_reason != 1 && g.session.auto_report_spam && g.session.use_online_ad_list && !spam_rid.empty())
+						{
+							g_thread_pool->push([message, player] {
+								bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), 5);
+							});
+						}
+						return true;
+					}
+				}
+			}
+
+			if (spam_reason != 0
+			    && (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session)))
 			{
 				if (g.session.log_chat_messages)
 					chat::log_chat(message, player, spam_reason, is_team);
+
 				player->is_spammer = true;
 				g.reactions.chat_spam.process(player);
+				if ((g.session.spam_timer <= 5.0f && g.session.spam_length > 20 && g.session.auto_report_spam) || spam_reason == SpamReason::STATIC_DETECTION)
+				{
+					g_thread_pool->push([message, player, spam_reason] {
+						bool isok = g_api_service->report_spam(message, player->get_rockstar_id(), spam_reason);
+					});
+				}
 				return true;
 			}
 			else
 			{
 				if (g.session.log_chat_messages)
 					chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
-				if (g.session.chat_translator.enabled)
+				if (g.session.chat_translator.enabled && !g.session.chat_translator.switch_send_only)
 				{
-					chat_message new_message{player->get_name(), message};
+					chat_message new_message{player->get_name(), message, false, false};
 					translate_queue.push(new_message);
 				}
 
@@ -741,7 +773,7 @@ namespace big
 		case rage::eNetMessage::MsgBattlEyeCmd:
 		{
 			char data[1028]{};
-			int size = buffer.Read<int>(11);
+			int size    = buffer.Read<int>(11);
 			bool client = buffer.Read<bool>(1);
 			buffer.SeekForward(4); // normalize before we read
 
@@ -760,7 +792,6 @@ namespace big
 			{
 				g_battleye_service.on_receive_message_from_server(player->get_net_game_player()->get_host_token(), &data, size);
 			}
-
 			if (player && !player->bad_host && player->is_host())
 			{
 				player->bad_host = true;

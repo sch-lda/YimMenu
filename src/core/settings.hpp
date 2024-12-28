@@ -429,6 +429,8 @@ namespace big
 			bool trust_friends                     = false;
 			bool trust_session                     = false;
 			bool use_spam_timer                    = true;
+			bool use_online_ad_list                = true;
+			bool auto_report_spam                  = true;
 			float spam_timer                       = 2.5f;
 			int spam_length                        = 55;
 
@@ -460,6 +462,8 @@ namespace big
 			script_block_opts script_block_opts;
 
 			// not to be saved
+			std::atomic_bool spoof_host_token_dirty = true;
+			std::uint64_t original_host_token = 0;
 			bool join_queued = false;
 			rage::rlSessionInfo info;
 			bool never_wanted_all = false;
@@ -480,19 +484,41 @@ namespace big
 				bool print_result           = false;
 				bool draw_result            = true;
 				bool bypass_same_language   = true;
-				std::string target_language = "en";
-				std::string endpoint        = "http://localhost:5000/translate";
+				bool switch_send_only       = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
+				int t_service_provider         = 0;
+				std::string DeepL_target_lang  = "ZH";
+				std::string Bing_target_lang   = "zh-Hans";
+				std::string Google_target_lang = "zh-CN";
+				std::string DeepLx_url         = "http://127.0.0.1:1188/translate";
+				std::string OpenAI_endpoint    = "https://api.openai.com/v1/chat/completions";
+				std::string OpenAI_key         = "";
+				std::string OpenAI_model       = "gpt-3.5-turbo";
+				std::string OpenAI_target_lang = "Chinese";
+				std::string Libre_target_lang  = "en";
+				std::string Libre_endpoint     = "http://localhost:5000/translate";
+				std::string DeepL_target_lang_send  = "ZH";
+				std::string Bing_target_lang_send   = "zh-Hans";
+				std::string Google_target_lang_send = "zh-CN";
+				std::string OpenAI_target_lang_send = "Chinese";
+				std::string Libre_target_lang_send  = "en";
+
+
+
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, switch_send_only, t_service_provider, DeepL_target_lang, Bing_target_lang, Google_target_lang, DeepLx_url, OpenAI_endpoint, OpenAI_key, OpenAI_model, OpenAI_target_lang, Libre_target_lang, Libre_endpoint, DeepL_target_lang_send, Bing_target_lang_send, Google_target_lang_send, OpenAI_target_lang_send, Libre_target_lang_send);
 			} chat_translator{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_host_to_stay_in_session, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator, script_block_opts)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_host_to_stay_in_session, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, use_online_ad_list, auto_report_spam, chat_translator, script_block_opts)
 		} session{};
 
 		struct settings
 		{
 			bool onboarding_complete = false;
 			bool dev_dlc             = false;
+
+			bool auto_run_ip_alt          = true;
+			std::string cloudflare_alt_ip = "";
 
 			struct hotkeys
 			{
@@ -527,7 +553,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_selected, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, passive, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted)
 			} hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc, onboarding_complete)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc, onboarding_complete, cloudflare_alt_ip, auto_run_ip_alt)
 		} settings{};
 
 		struct spawn_vehicle
@@ -949,6 +975,8 @@ namespace big
 			bool demo          = false;
 			bool switched_view = true;
 
+			bool open_on_inject = true;
+
 			struct ingame_overlay
 			{
 				bool opened                = true;
@@ -998,7 +1026,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gui, format_money)
 			} gui{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators, gui)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, open_on_inject, ingame_overlay, vehicle_control, ingame_overlay_indicators, gui)
 		} window{};
 
 		struct context_menu
@@ -1063,8 +1091,8 @@ namespace big
 
 			bool replace_game_matchmaking = false;
 			bool exclude_modder_sessions     = false;
-
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, filter_multiplexed_sessions, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter, exclude_modder_sessions)
+			bool exclude_ad_sessions      = false;
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, filter_multiplexed_sessions, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter, exclude_modder_sessions, exclude_ad_sessions)
 		} session_browser{};
 
 		struct session_protection
@@ -1135,7 +1163,11 @@ namespace big
 		{
 			bool enable_auto_reload_changed_scripts = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(lua, enable_auto_reload_changed_scripts)
+			bool lua_translation_toggle				= true;
+			bool lua_translation_disable_update		= false;
+			std::string lua_translation_endpoint	= "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json";
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(lua, enable_auto_reload_changed_scripts, lua_translation_toggle, lua_translation_disable_update, lua_translation_endpoint)
 		} lua{};
 
 		struct persist_weapons

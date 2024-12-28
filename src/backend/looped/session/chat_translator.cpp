@@ -23,15 +23,67 @@ namespace big
 			g_thread_pool->push([first_message] {
 				std::string translate_result;
 				std::string sender = "[T]" + first_message.sender;
-				translate_result   = g_api_service->get_translation(first_message.content, g.session.chat_translator.target_language);
+				switch (g.session.chat_translator.t_service_provider)
+				{
+				case 0:
+					if (first_message.issend == true)
+						translate_result =
+						    g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang_send, true);
+					else
+						translate_result =
+						    g_api_service->get_translation_from_Bing(first_message.content, g.session.chat_translator.Bing_target_lang, false);
+					break;
+				case 1:
+					if (first_message.issend == true)
+						translate_result =
+						    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang_send, true);
+					else
+						translate_result =
+						    g_api_service->get_translation_from_Google(first_message.content, g.session.chat_translator.Google_target_lang, false);
+					break;
+				case 2:
+					if (first_message.issend == true)
+						translate_result =
+					    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang_send, true);
+					else
+						translate_result =
+						    g_api_service->get_translation_from_Deeplx(first_message.content, g.session.chat_translator.DeepL_target_lang, false);
+					break;
+				case 3:
+					if (first_message.issend == true)
+						translate_result =
+						    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang_send, true);
+					else
+						translate_result =
+						    g_api_service->get_translation_from_OpenAI(first_message.content, g.session.chat_translator.OpenAI_target_lang, false);
+					break;
+				case 4:
+					if (first_message.issend == true)
+						translate_result =
+						    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang_send, true);
+					else
+						translate_result =
+						    g_api_service->get_translation_from_Libre(first_message.content, g.session.chat_translator.Libre_target_lang, false);
+					break;
+				}
 
 				translate_lock = false;
 				if (translate_result != "")
 				{
-					if (g.session.chat_translator.draw_result)
-						chat::draw_chat(translate_result, sender, false);
-					if (g.session.chat_translator.print_result)
-						LOG(INFO) << "[" << first_message.sender << "]" << first_message.content << " --> " << translate_result;
+					if (first_message.issend == true)
+						chat::send_message(translate_result, nullptr, true, first_message.isteam);
+					else
+					{
+						if (g.session.chat_translator.draw_result)
+							chat::draw_chat(translate_result, sender, false);
+						if (g.session.chat_translator.print_result)
+							LOG(INFO) << "[" << first_message.sender << "]" << first_message.content << " --> " << translate_result;
+					}
+				}
+				else
+				{
+					if (first_message.issend == true)
+						chat::send_message(first_message.content, nullptr, true, first_message.isteam);					
 				}
 			});
 			translate_queue.pop();

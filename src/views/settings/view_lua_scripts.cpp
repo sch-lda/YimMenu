@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "lua/lua_manager.hpp"
 #include "views/view.hpp"
+#include "thread_pool.hpp"
 
 namespace big
 {
@@ -112,6 +113,25 @@ namespace big
 		if (components::button("ENABLE_ALL_LUA_SCRIPTS"_T))
 		{
 			g_lua_manager->enable_all_modules();
+		}
+
+		if (ImGui::CollapsingHeader("Lua翻译设置"))
+		{
+			components::small_text("对Lua采用API劫持替换字符串的方式实现翻译.访问'https://github.com/sch-lda/yctest2/tree/main/Lua'了解更多");
+
+			ImGui::Checkbox("启用Lua翻译", &g.lua.lua_translation_toggle);
+			ImGui::Checkbox("禁用在线更新", &g.lua.lua_translation_disable_update);
+			components::input_text_with_hint("语言文件路径",
+			    "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json",
+			    g.lua.lua_translation_endpoint);
+			if (components::button("重新加载语言文件"))
+			{
+				g_thread_pool->push([] {
+					g_translation_service.load_lua_translations();
+
+					g_notification_service.push_success("LANGUAGE"_T.data(), "已尝试重新获取Lua语言文件");
+				});
+			}
 		}
 	}
 }

@@ -9,7 +9,7 @@
 #include "packet.hpp"
 #include "script_mgr.hpp"
 #include "util/session.hpp"
-
+#include "lua/lua_manager.hpp"
 #include <network/snSession.hpp>
 
 namespace big
@@ -20,7 +20,6 @@ namespace big
 		{
 			components::command_checkbox<"external_console">();
 
-			components::command_checkbox<"windowhook">("VIEW_DEBUG_MISC_DISABLE_GTA_WINDOW_HOOK"_T);
 
 			ImGui::Text(std::format("{}: {}/{}", "VIEW_DEBUG_MISC_FIBER_POOL_USAGE"_T, g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers()).c_str());
 			ImGui::SameLine();
@@ -100,6 +99,11 @@ namespace big
 			ImGui::Checkbox("VIEW_DEBUG_MISC_IMGUI_DEMO"_T.data(), &g.window.demo);
 
 			components::command_button<"fastquit">();
+
+			components::button("解除注入(存在反作弊检测风险)", [] {
+				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
+				g_running = false;
+			});
 
 			if (ImGui::TreeNode("VIEW_DEBUG_MISC_FUZZER"_T.data()))
 			{

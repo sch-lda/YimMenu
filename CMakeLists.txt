@@ -14,7 +14,12 @@ set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 include(cmake/git.cmake)
 
 # Fetch modules
+message("\nFetching custom modules")
+include(cmake/gtav-classes.cmake)
+
 message("\nFetching modules")
+include(cmake/asio.cmake)
+
 include(cmake/asmjit.cmake)
 include(cmake/minhook.cmake)
 include(cmake/async-logger.cmake)
@@ -23,8 +28,6 @@ include(cmake/json.cmake)
 include(cmake/cpr.cmake)
 include(cmake/lua.cmake)
 include(cmake/imgui.cmake)
-message("\nFetching custom modules")
-include(cmake/gtav-classes.cmake)
 
 
 # YimMenu
@@ -60,6 +63,7 @@ target_include_directories(YimMenu PRIVATE
     "${imgui_SOURCE_DIR}"
     "${minhook_SOURCE_DIR}/src/hde"
     "${asmjit_SOURCE_DIR}/src"
+    "${asio_SOURCE_DIR}/asio/include"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")

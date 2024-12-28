@@ -7,12 +7,14 @@
 #include "pointers.hpp"
 #include "renderer/renderer.hpp"
 #include "thread_pool.hpp"
+#include "services/api/api_service.hpp"
+#include "util/cloudflare.hpp"
 
 namespace big
 {
 	translation_service::translation_service() :
-	    m_url("https://raw.githubusercontent.com/YimMenu/Translations/master"),
-	    m_fallback_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+	    m_url("https://raw.githubusercontent.com/sch-lda/Translations/master"),
+	    m_fallback_url("https://cdn.jsdelivr.net/gh/sch-lda/Translations@master")
 	{
 	}
 
@@ -20,8 +22,11 @@ namespace big
 	{
 		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
+		if (g.lua.lua_translation_toggle)
+			load_lua_translations();
+
 		bool loaded_remote_index = false;
-		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)
+		for (size_t i = 0; i < 2 && !loaded_remote_index; i++)
 		{
 			if (i)
 				LOG(WARNING) << "Failed to download remote index, trying again... (" << i << ")";
@@ -103,9 +108,10 @@ namespace big
 	{
 		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
 		{
+
 			const auto path = item.path();
 			const auto stem = path.stem().string();
-			if (stem == "index" || item.path().extension() != ".json")
+			if (stem == "index" || stem == "lua_lang" || item.path().extension() != ".json")
 				continue;
 
 			if (!download_language_pack(stem))
@@ -328,4 +334,75 @@ namespace big
 			});
 		}
 	}
+
+	void translation_service::load_lua_translations()
+	{
+		if (!g.lua.lua_translation_disable_update)
+		{
+			std::string url     = g.lua.lua_translation_endpoint;
+			const auto response = g_http_client.get(url, {}, {});
+
+			if (response.status_code != 200)
+			{
+				cfailcount++;
+				LOG(WARNING) << "lua translations download failed, trying to load from disk.";
+				LOG(WARNING) << "Lua translation download error:" << response.status_code;
+			}
+			else
+			{
+				static std::ofstream lua_lang_file(g_file_manager.get_project_file("./translations/lua_lang.json").get_path());
+				lua_lang_file << response.text;
+				lua_lang_file.close();
+			}
+		}
+
+		m_translations_lua.clear();
+
+		auto file = m_translation_directory->get_file("./lua_lang.json");
+		if (!file.exists())
+		{
+			LOG(WARNING) << "No lua translations found on disk.";
+			return;
+		}
+		auto j = nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+
+		for (auto& [key, value] : j.items())
+		{
+			std::string key_str = key; 
+			size_t pos;
+			while ((pos = key_str.find("\\n")) != std::string::npos)
+			{
+				key_str.replace(pos, 2, "\n");
+			}
+			m_translations_lua.insert({key_str, value.get<std::string>()});
+		}
+		sorted_m_translations_lua = std::vector<std::pair<std::string, std::string>>(m_translations_lua.begin(), m_translations_lua.end());
+		std::sort(sorted_m_translations_lua.begin(), sorted_m_translations_lua.end(), [](const auto& a, const auto& b) {
+			return a.first.length() > b.first.length();
+		});
+	}
+
+	std::string translation_service::get_lua_translation(const std::string translation_key) const
+	{
+		if (!g.lua.lua_translation_toggle)
+			return translation_key;
+
+		if (auto it = m_translations_lua.find(translation_key); it != m_translations_lua.end())
+			return it->second.c_str();
+
+
+		std::string translation_key_p = translation_key;
+		for (auto& [key, value] : sorted_m_translations_lua)
+		{
+			size_t pos = translation_key_p.find(key);
+			while (pos != std::string::npos)
+			{
+				translation_key_p.replace(pos, key.length(), value);
+				pos = translation_key_p.find(key, pos + value.length());
+			}
+		}
+
+		return translation_key_p;
+	}
+
 }

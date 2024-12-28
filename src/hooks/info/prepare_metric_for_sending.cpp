@@ -51,7 +51,8 @@ namespace big
 		"FIRST_VEH",
 		"RANK_UP", 
 		"COMMS_TEXT", 
-		"BLAST",
+		"BLAST", 
+		"UNEXPECTED_FILE",
 	});
 
 	std::string hex_encode(std::string_view input) {

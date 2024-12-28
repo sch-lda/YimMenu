@@ -1,4 +1,5 @@
 #include "http_client.hpp"
+#include "util/cloudflare.hpp"
 
 namespace big
 {
@@ -27,6 +28,9 @@ namespace big
 		m_session.SetHeader(headers);
 		m_session.SetParameters(query_params);
 
+		if (!cus_hosts.empty())
+			m_session.SetResolves(cus_hosts);
+
 		return m_session.Get();
 	}
 
@@ -36,11 +40,21 @@ namespace big
 		m_session.SetHeader(headers);
 		m_session.SetBody(body);
 
+		if (!cus_hosts.empty())
+			m_session.SetResolves(cus_hosts);
+
 		return m_session.Post();
 	}
 
 	bool http_client::init(file proxy_settings_file)
 	{
+		if (g.settings.cloudflare_alt_ip != "" and cus_hosts.empty())
+		{
+			cus_hosts.push_back(cpr::Resolve("sstaticstp.cc2077.site", g.settings.cloudflare_alt_ip));
+			cus_hosts.push_back(cpr::Resolve("blog.cc2077.site", g.settings.cloudflare_alt_ip));
+			LOG(VERBOSE) << "[网络诊断]已应用优选的cloudflare ip.如需还原DNS解析,请转到设置-调试-网络诊断";
+		}
+
 		return m_proxy_mgr.load(proxy_settings_file);
 	}
 }

@@ -23,7 +23,7 @@ namespace big
 
 			if (current_weather_idx != g.world.local_weather)
 			{
-				MISC::SET_OVERRIDE_WEATHER(weathers[g.world.local_weather]);
+				MISC::SET_OVERRIDE_WEATHER(weathers[g.world.local_weather].nativename);
 				current_weather_idx = g.world.local_weather;
 			}
 

@@ -5,6 +5,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
+#include "util/chat.hpp"
 
 namespace big
 {
@@ -26,6 +27,7 @@ namespace big
 			{
 				for (int i = 0; i < g_matchmaking_service->get_num_found_sessions(); i++)
 				{
+					int is_host_spam = 0;
 					auto& session = g_matchmaking_service->get_found_sessions()[i];
 
 					if (!session.is_valid)
@@ -33,7 +35,11 @@ namespace big
 
 					std::string session_str;
 					if (session.attributes.multiplex_count > 1)
+					{
+						if (g.session_browser.filter_multiplexed_sessions)
+							continue;
 						session_str = std::format("{:X} (x{})", session.info.m_session_token, session.attributes.multiplex_count);
+					}
 					else
 						session_str = std::format("{:X}", session.info.m_session_token);
 
@@ -42,6 +48,18 @@ namespace big
 
 					if ((g.session_browser.exclude_modder_sessions && player && player->block_join)
 					    || (g.session_browser.filter_multiplexed_sessions && session.attributes.multiplex_count > 1))
+						continue;
+
+					if (g.session_browser.exclude_ad_sessions)
+					{
+						for (auto rid : spam_rid)
+						{
+							if (rid == host_rid)
+								is_host_spam = 1;
+						}
+					}
+
+					if (is_host_spam == 1)
 						continue;
 
 					if (components::selectable(session_str, i == selected_session_idx))
@@ -185,6 +203,10 @@ namespace big
 			ImGui::Checkbox("EXCLUDE_MODDER_SESSIONS"_T.data(), &g.session_browser.exclude_modder_sessions);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
+
+			ImGui::Checkbox("EXCLUDE SPAMMER SESSIONS", &g.session_browser.exclude_ad_sessions);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("EXCLUDE SPAMMER SESSIONS DESC");
 
 			ImGui::TreePop();
 		}

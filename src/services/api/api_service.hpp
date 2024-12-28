@@ -6,14 +6,28 @@
 
 namespace big
 {
+	extern std::string ms_token_str;
+
 	class api_service
 	{
 	public:
 		api_service();
 		~api_service();
 
+		std::vector<std::string> get_ad_list();
+		std::vector<uint64_t> get_ad_rid_list();
+
+		bool report_spam(std::string_view message, uint64_t rid, int type);
+
+		std::string get_translation_from_Deeplx(std::string message, std::string tar_lang, bool issend);
+
+		std::string get_translation_from_Bing(std::string message, std::string tar_lang, bool issend);
+
+		std::string get_translation_from_Google(std::string message, std::string tar_lang, bool issend);
+
+		std::string get_translation_from_OpenAI(std::string message, std::string tar_lang, bool issend);
 		// Makes an API call to a LibreTranslate endpoint.
-		std::string get_translation(std::string message, std::string target_language);
+		std::string get_translation_from_Libre(std::string message, std::string target_language, bool issend);
 
 		// Returns true if an valid profile matching his username has been found
 		bool get_rid_from_username(std::string_view username, uint64_t& result);

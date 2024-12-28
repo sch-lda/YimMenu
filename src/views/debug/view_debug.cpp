@@ -1,6 +1,7 @@
 #include "view_debug.hpp"
 
 #include "services/gui/gui_service.hpp"
+#include "util/cloudflare.hpp"
 
 namespace big
 {
@@ -20,6 +21,7 @@ namespace big
 			script_events();
 			scripts();
 			threads();
+			internet();
 		}
 		ImGui::End();
 	}
