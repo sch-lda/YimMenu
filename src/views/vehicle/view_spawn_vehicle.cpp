@@ -165,12 +165,13 @@ namespace big
 				for (auto& item : calculated_map)
 				{
 					const auto& vehicle = item.second;
-					ImGui::PushID(vehicle.m_hash);
-					components::selectable(vehicle.m_display_name, false, [&vehicle] {
-						const auto spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
+					const auto vehicle_hash = vehicle.m_hash;
+					ImGui::PushID(vehicle_hash);
+					components::selectable(vehicle.m_display_name, false, [vehicle_hash] {
+						const auto spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle_hash);
 						const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
+						auto veh = vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
 
 						if (veh == 0)
 						{
@@ -202,7 +203,7 @@ namespace big
 					}
 					else if (ImGui::IsItemHovered())
 					{
-						g_model_preview_service->show_vehicle(vehicle.m_hash, g.spawn_vehicle.spawn_maxed);
+						g_model_preview_service->show_vehicle(vehicle_hash, g.spawn_vehicle.spawn_maxed);
 					}
 				}
 			}
