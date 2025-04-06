@@ -163,14 +163,7 @@ namespace big
 
 	bool api_service::report_spam(std::string_view message, uint64_t rid, int type)
 	{
-		try
-		{
-		return true;
-		}
-		catch (std::exception& e)
-		{
-			return false;
-		}
+	        return true;
 	}
 
 	std::string api_service::get_translation_from_Libre(std::string message, std::string target_language, bool issend)
