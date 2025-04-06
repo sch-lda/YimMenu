@@ -122,7 +122,7 @@ namespace big
 			ImGui::Checkbox("启用Lua翻译", &g.lua.lua_translation_toggle);
 			ImGui::Checkbox("禁用在线更新", &g.lua.lua_translation_disable_update);
 			components::input_text_with_hint("语言文件路径",
-			    "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json",
+			    "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json",
 			    g.lua.lua_translation_endpoint);
 			if (components::button("重新加载语言文件"))
 			{

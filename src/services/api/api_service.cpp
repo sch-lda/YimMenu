@@ -35,7 +35,7 @@ namespace big
 
 	std::vector<std::string> api_service::get_ad_list()
 	{
-		std::string url = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad.json";
+		std::string url = "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad.json";
 		const auto response = g_http_client.get(url,
 		    {},
 		    {});
@@ -100,7 +100,7 @@ namespace big
 
 	std::vector<uint64_t> api_service::get_ad_rid_list()
 	{
-		std::string url     = "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad_rid.json";
+		std::string url     = "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/yctest2/main/ad_rid.json";
 		const auto response = g_http_client.get(url, {}, {});
 
 		if (response.status_code != 200)
@@ -165,11 +165,6 @@ namespace big
 	{
 		try
 		{
-		LOG(INFO) << "1";
-		LOG(INFO) << "2";
-		LOG(INFO) << "3";
-		LOG(INFO) << "4";
-		LOG(INFO) << "5";
 		return true;
 		}
 		catch (std::exception& e)

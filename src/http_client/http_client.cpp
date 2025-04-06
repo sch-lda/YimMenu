@@ -50,8 +50,8 @@ namespace big
 	{
 		if (g.settings.cloudflare_alt_ip != "" and cus_hosts.empty())
 		{
-			cus_hosts.push_back(cpr::Resolve("sstaticstp.cc2077.site", g.settings.cloudflare_alt_ip));
-			cus_hosts.push_back(cpr::Resolve("blog.cc2077.site", g.settings.cloudflare_alt_ip));
+			cus_hosts.push_back(cpr::Resolve("sstaticstp.1007890.xyz", g.settings.cloudflare_alt_ip));
+			cus_hosts.push_back(cpr::Resolve("blog.1007890.xyz", g.settings.cloudflare_alt_ip));
 			LOG(VERBOSE) << "[网络诊断]已应用优选的cloudflare ip.如需还原DNS解析,请转到设置-调试-网络诊断";
 		}
 

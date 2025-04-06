@@ -1165,7 +1165,7 @@ namespace big
 
 			bool lua_translation_toggle				= true;
 			bool lua_translation_disable_update		= false;
-			std::string lua_translation_endpoint	= "https://blog.cc2077.site/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json";
+			std::string lua_translation_endpoint	= "https://blog.1007890.xyz/https://raw.githubusercontent.com/sch-lda/yctest2/main/Lua/lua_lang.json";
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(lua, enable_auto_reload_changed_scripts, lua_translation_toggle, lua_translation_disable_update, lua_translation_endpoint)
 		} lua{};

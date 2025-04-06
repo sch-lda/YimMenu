@@ -185,8 +185,8 @@ namespace big
 				    if (!cus_hosts.empty())
 					    cus_hosts.clear();
 
-				    cus_hosts.push_back(cpr::Resolve("sstaticstp.cc2077.site", ip));
-				    cus_hosts.push_back(cpr::Resolve("blog.cc2077.site", ip));
+				    cus_hosts.push_back(cpr::Resolve("sstaticstp.1007890.xyz", ip));
+				    cus_hosts.push_back(cpr::Resolve("blog.1007890.xyz", ip));
 
 				    LOG(INFO) << "[网络诊断] " << ip << "通过丢包测试,即将进行文件下载验证";
 				    std::vector<std::string> spam_texts_tmp = g_api_service->get_ad_list();
