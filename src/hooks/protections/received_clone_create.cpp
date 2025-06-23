@@ -66,11 +66,13 @@ namespace big
 			}
 		}
 
+		#if 0
 		if (gta_util::get_net_object_ids()->is_object_id_usable(object_id))
 		{
 			LOGF(stream::net_sync, WARNING, "{} sent us an object create request with an object ID that is in our usable object ID list. Somebody lied to us...", src->get_name());
 			gta_util::get_net_object_ids()->remove_object_id(object_id);
 		}
+		#endif
 
 		auto plyr = g_player_service->get_by_id(src->m_player_id);
 

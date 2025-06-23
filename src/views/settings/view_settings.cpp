@@ -36,7 +36,7 @@ namespace big
 					*g_pointers->m_gta.m_language = id;
 
 					g_fiber_pool->queue_job([] {
-						g_pointers->m_gta.m_update_language(true);
+						g_pointers->m_gta.m_update_language(true, false);
 					});
 				}
 

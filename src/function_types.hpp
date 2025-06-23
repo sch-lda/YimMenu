@@ -174,7 +174,7 @@ namespace big::functions
 
 	using handle_chat_message = void (*)(void* chat_data, void*, rage::rlGamerHandle* handle, const char* text, bool is_team);
 
-	using update_language = void (*)(bool);
+	using update_language = void (*)(bool, bool);
 
 	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
 
