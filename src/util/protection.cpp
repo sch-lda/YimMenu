@@ -115,7 +115,7 @@ namespace big::protection
 
 	bool should_allow_script_launch(int launcher_script)
 	{
-		if (launcher_script >= launcher_scripts.size())
+		if (static_cast<size_t>(launcher_script) >= launcher_scripts.size())
 			return false;
 
 		auto script = launcher_scripts[launcher_script];
