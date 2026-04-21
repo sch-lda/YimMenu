@@ -30,6 +30,7 @@
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "services/xml_maps/xml_map_service.hpp"
+#include "services/script_function_hook/script_function_hook_service.hpp"
 #include "thread_pool.hpp"
 #include "util/is_proton.hpp"
 #include "version.hpp"
@@ -343,6 +344,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
+			    auto script_function_hook_service_instance = std::make_unique<script_function_hook_service>();
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_notification_service.initialise();
@@ -438,6 +440,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Context Service reset.";
 			    xml_vehicles_service_instance.reset();
 			    LOG(INFO) << "Xml Vehicles Service reset.";
+			    script_function_hook_service_instance.reset();
+			    LOG(INFO) << "Script Function Hook Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();
