@@ -195,11 +195,11 @@ namespace big
 				spam_texts.clear();
 				spam_texts = spam_texts_tmp;
 
-				LOG(INFO) << "已加载附加战局广告关键词黑名单";
+				LOG(INFO) << "???????????????";
 			}
 			else
 			{
-				LOG(WARNING) << "附加战局广告关键词黑名单加载失败";
+				LOG(WARNING) << "????????????????";
 			}
 		}
 
@@ -211,12 +211,12 @@ namespace big
 				spam_rid.clear();
 				spam_rid = spam_rid_tmp;
 
-				LOG(INFO) << "已加载广告机关键词黑名单";
+				LOG(INFO) << "????????????";
 			}
 			else
 			{
 				spam_rid = {};
-				LOG(WARNING) << "广告机关键词黑名单加载失败";
+				LOG(WARNING) << "?????????????";
 			}
 
 			LOG(INFO) << "reportspam on";
@@ -225,22 +225,22 @@ namespace big
 		{
 			if (g.settings.auto_run_ip_alt)
 			{
-				LOG(INFO) << "[网络诊断]无法获取在线资源,自动运行IP优选";
-				g_notification_service.push_warning("当前可能无法访问Cloudflare", "将自动尝试选择一个更合适的ip地址");
+				LOG(INFO) << "[????]????????,????IP??";
+				g_notification_service.push_warning("????????Cloudflare", "?????????????ip??");
 
 				g_thread_pool->push([] {
 					if (big::cd_ip_auto_test() == 0)
 					{
-						LOG(INFO) << "[网络诊断]CloudFlare IP优选完成";
+						LOG(INFO) << "[????]CloudFlare IP????";
 					}
 					else
 					{
-						LOG(INFO) << "[网络诊断]CloudFlare IP优选失败";
+						LOG(INFO) << "[????]CloudFlare IP????";
 					}
 				});
 			}
 			else
-				g_notification_service.push_warning("当前可能无法访问Cloudflare", "请尝试在 设置-调试-网络诊断 选择更合适的ip地址");
+				g_notification_service.push_warning("????????Cloudflare", "???? ??-??-???? ??????ip??");
 		}
 	}
 }
